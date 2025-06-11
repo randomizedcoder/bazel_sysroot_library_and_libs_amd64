@@ -1,0 +1,1 @@
+# bazel_sysroot_library_and_libs_amd64
