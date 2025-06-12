@@ -17,6 +17,7 @@ let
     zlib zlib.dev zlib.static
     bzip2 bzip2.dev
     xz xz.dev
+    zstd zstd.dev
 
     # XML and parsing
     libxml2 libxml2.dev libxml2.out

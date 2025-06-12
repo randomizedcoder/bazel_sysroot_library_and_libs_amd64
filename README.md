@@ -57,7 +57,7 @@ The sysroot combines two main components:
 
 The sysroot includes:
 - Core system libraries (glibc, gcc)
-- Compression libraries (zlib, bzip2, xz)
+- Compression libraries (zlib, bzip2, xz, zstd)
 - XML and parsing libraries (libxml2, expat)
 - Networking libraries (openssl, curl)
 - Text processing libraries (pcre, pcre2)
@@ -65,6 +65,10 @@ The sysroot includes:
 - Database libraries (sqlite)
 - Image processing libraries (libpng, libjpeg)
 - System utilities (util-linux)
+
+## Sysroot directory listing
+
+This repo also contains the [list of all the files](./sysroot_file_list.txt) in the sysroot
 
 ## License
 

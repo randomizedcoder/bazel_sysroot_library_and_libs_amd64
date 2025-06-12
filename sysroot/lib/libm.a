@@ -1,0 +1,4 @@
+/* GNU ld script
+*/
+OUTPUT_FORMAT(elf64-x86-64)
+GROUP ( /nix/store/vaybwmwx0hh03jcsmzizq28xxrnnzhyb-glibc-2.40-66-static/lib/libm-2.40.a /nix/store/vaybwmwx0hh03jcsmzizq28xxrnnzhyb-glibc-2.40-66-static/lib/libmvec.a )

@@ -41,6 +41,9 @@ copy: build
 	rm -rf sysroot
 	mkdir -p sysroot
 	rsync -av result/sysroot/ sysroot/
+	chmod -R 755 sysroot
+	chown -R $(shell id -u):$(shell id -g) sysroot
+	find ./sysroot > sysroot_file_list.txt
 
 push:
 	git add .
