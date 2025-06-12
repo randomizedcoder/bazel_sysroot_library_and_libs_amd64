@@ -4,30 +4,30 @@
 
 package(default_visibility = ["//visibility:public"])
 
-# Startup files
+# Startup files (use objects, not static_library)
 cc_import(
     name = "crt1",
-    static_library = "lib/Scrt1.o",
+    objects = ["lib/Scrt1.o"],
 )
 
 cc_import(
     name = "crti",
-    static_library = "lib/crti.o",
+    objects = ["lib/crti.o"],
 )
 
 cc_import(
     name = "crtbegin",
-    static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtbeginS.o",
+    objects = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtbeginS.o"],
 )
 
 cc_import(
     name = "crtend",
-    static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtendS.o",
+    objects = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtendS.o"],
 )
 
 cc_import(
     name = "crtn",
-    static_library = "lib/crtn.o",
+    objects = ["lib/crtn.o"],
 )
 
 # Core C/C++ libraries

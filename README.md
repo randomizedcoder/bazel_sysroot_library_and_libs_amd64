@@ -50,7 +50,7 @@ The sysroot combines two main components:
 
 4. Copy the sysroot to the target location (requires sudo):
    ```bash
-   sudo make copy
+   make copy
    ```
 
 ## Dependencies
@@ -69,6 +69,33 @@ The sysroot includes:
 ## Sysroot directory listing
 
 This repo also contains the [list of all the files](./sysroot_file_list.txt) in the sysroot
+
+## NOTE for Bazel users
+
+When writing BUILD.bazel rules for this sysroot, be aware:
+
+- For startup files (such as crt1.o, crti.o, crtbeginS.o, crtendS.o, crtn.o), you must use the `objects` attribute of `cc_import` instead of `static_library`. This is because Bazel expects `static_library` to be an archive (.a or .lib), not a single object file (.o).
+- For static libraries (.a), use the `static_library` attribute.
+- For shared libraries (.so), use the `shared_library` attribute.
+
+Example:
+```python
+cc_import(
+    name = "crt1",
+    objects = ["lib/Scrt1.o"],
+)
+cc_import(
+    name = "libm",
+    static_library = "lib/libm.a",
+)
+cc_import(
+    name = "libstdc++",
+    static_library = "lib/libstdc++.a",
+    shared_library = "lib/libstdc++.so",
+)
+```
+
+This ensures Bazel can correctly use all sysroot files for linking and building.
 
 ## License
 
