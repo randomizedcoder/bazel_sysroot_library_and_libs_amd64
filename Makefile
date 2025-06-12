@@ -41,8 +41,12 @@ copy: build
 	rm -rf sysroot
 	mkdir -p sysroot
 	rsync -av result/sysroot/ sysroot/
+
+	echo "Setting permissions on the sysroot files"
 	chmod -R 755 sysroot
 	chown -R $(shell id -u):$(shell id -g) sysroot
+
+	echo "Updating the sysroot file list"
 	find ./sysroot > sysroot_file_list.txt
 
 push:
