@@ -1,0 +1,28 @@
+#
+# BUILD.bazel
+#
+
+package(default_visibility = ["//visibility:public"])
+
+# Usr directory filegroup
+filegroup(
+    name = "sysroot",
+    srcs = [
+        ":include",
+        ":lib",
+    ],
+)
+
+# Include directory filegroup
+filegroup(
+    name = "include",
+    srcs = glob(["include/**"]),
+)
+
+# Library directory filegroup
+filegroup(
+    name = "lib",
+    srcs = glob(["lib/**"]),
+)
+
+# end
