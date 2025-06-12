@@ -5,219 +5,227 @@
 package(default_visibility = ["//visibility:public"])
 
 # Startup files
-cc_library(
+cc_import(
     name = "crt1",
-    srcs = ["lib/Scrt1.o"],
+    static_library = "lib/Scrt1.o",
 )
 
-cc_library(
+cc_import(
     name = "crti",
-    srcs = ["lib/crti.o"],
+    static_library = "lib/crti.o",
 )
 
-cc_library(
+cc_import(
     name = "crtbegin",
-    srcs = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtbeginS.o"],
+    static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtbeginS.o",
 )
 
-cc_library(
+cc_import(
     name = "crtend",
-    srcs = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtendS.o"],
+    static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtendS.o",
 )
 
-cc_library(
+cc_import(
     name = "crtn",
-    srcs = ["lib/crtn.o"],
+    static_library = "lib/crtn.o",
 )
 
 # Core C/C++ libraries
-cc_library(
+cc_import(
     name = "libc",
-    srcs = ["lib/libc.a"],
+    static_library = "lib/libc.a",
 )
 
-cc_library(
+cc_import(
     name = "libstdc++",
-    srcs = ["lib/libstdc++.a"],
+    static_library = "lib/libstdc++.a",
+    shared_library = "lib/libstdc++.so",
 )
 
-cc_library(
+cc_import(
     name = "libgcc",
-    srcs = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc.a"],
+    static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc.a",
 )
 
-cc_library(
+cc_import(
     name = "libgcc_s",
-    srcs = ["lib/libgcc_s.so"],
+    shared_library = "lib/libgcc_s.so",
 )
 
-cc_library(
+cc_import(
     name = "libm",
-    srcs = ["lib/libm.a"],
+    static_library = "lib/libm.a",
 )
 
-cc_library(
+cc_import(
     name = "libpthread",
-    srcs = ["lib/libpthread.a"],
+    static_library = "lib/libpthread.a",
+    shared_library = "lib/libpthread.so",
 )
 
-cc_library(
+cc_import(
     name = "libdl",
-    srcs = ["lib/libdl.a"],
+    static_library = "lib/libdl.a",
+    shared_library = "lib/libdl.so",
 )
 
-cc_library(
+cc_import(
     name = "librt",
-    srcs = ["lib/librt.a"],
+    static_library = "lib/librt.a",
+    shared_library = "lib/librt.so",
 )
 
-cc_library(
+cc_import(
     name = "libutil",
-    srcs = ["lib/libutil.a"],
+    static_library = "lib/libutil.a",
+    shared_library = "lib/libutil.so",
 )
 
-cc_library(
+cc_import(
     name = "libresolv",
-    srcs = ["lib/libresolv.a"],
+    static_library = "lib/libresolv.a",
+    shared_library = "lib/libresolv.so",
 )
 
-cc_library(
+cc_import(
     name = "libanl",
-    srcs = ["lib/libanl.a"],
+    static_library = "lib/libanl.a",
+    shared_library = "lib/libanl.so",
 )
 
 # Compression libraries
-cc_library(
+cc_import(
     name = "libz",
-    srcs = ["lib/libz.a"],
+    static_library = "lib/libz.a",
+    shared_library = "lib/libz.so",
 )
 
 # XML and parsing
-cc_library(
+cc_import(
     name = "libxml2",
-    srcs = ["lib/libxml2.so"],
+    shared_library = "lib/libxml2.so",
 )
 
-cc_library(
+cc_import(
     name = "libexpat",
-    srcs = ["lib/libexpat.so"],
+    shared_library = "lib/libexpat.so",
 )
 
 # Networking
-cc_library(
+cc_import(
     name = "libssl",
-    srcs = ["lib/libssl.so"],
+    shared_library = "lib/libssl.so",
 )
 
-cc_library(
+cc_import(
     name = "libcrypto",
-    srcs = ["lib/libcrypto.so"],
+    shared_library = "lib/libcrypto.so",
 )
 
-cc_library(
+cc_import(
     name = "libcurl",
-    srcs = ["lib/libcurl.so"],
+    shared_library = "lib/libcurl.so",
 )
 
 # Text processing
-cc_library(
+cc_import(
     name = "libpcre",
-    srcs = ["lib/libpcre.so"],
+    shared_library = "lib/libpcre.so",
 )
 
-cc_library(
+cc_import(
     name = "libpcre2-8",
-    srcs = ["lib/libpcre2-8.so"],
+    shared_library = "lib/libpcre2-8.so",
 )
 
-cc_library(
+cc_import(
     name = "libpcre2-16",
-    srcs = ["lib/libpcre2-16.so"],
+    shared_library = "lib/libpcre2-16.so",
 )
 
-cc_library(
+cc_import(
     name = "libpcre2-32",
-    srcs = ["lib/libpcre2-32.so"],
+    shared_library = "lib/libpcre2-32.so",
 )
 
-cc_library(
+cc_import(
     name = "libpcre2-posix",
-    srcs = ["lib/libpcre2-posix.so"],
+    shared_library = "lib/libpcre2-posix.so",
 )
 
 # JSON
-cc_library(
+cc_import(
     name = "libjansson",
-    srcs = ["lib/libjansson.so"],
+    shared_library = "lib/libjansson.so",
 )
 
 # Database
-cc_library(
+cc_import(
     name = "libsqlite3",
-    srcs = ["lib/libsqlite3.so"],
+    shared_library = "lib/libsqlite3.so",
 )
 
 # Image processing
-cc_library(
+cc_import(
     name = "libpng",
-    srcs = ["lib/libpng16.so"],
+    shared_library = "lib/libpng16.so",
 )
 
-cc_library(
+cc_import(
     name = "libjpeg",
-    srcs = ["lib/libjpeg.so"],
+    shared_library = "lib/libjpeg.so",
 )
 
 # Sanitizer libraries
-cc_library(
+cc_import(
     name = "libasan",
-    srcs = ["lib/libasan.so"],
+    shared_library = "lib/libasan.so",
 )
 
-cc_library(
+cc_import(
     name = "libtsan",
-    srcs = ["lib/libtsan.so"],
+    shared_library = "lib/libtsan.so",
 )
 
-cc_library(
+cc_import(
     name = "libubsan",
-    srcs = ["lib/libubsan.so"],
+    shared_library = "lib/libubsan.so",
 )
 
-cc_library(
+cc_import(
     name = "liblsan",
-    srcs = ["lib/liblsan.so"],
+    shared_library = "lib/liblsan.so",
 )
 
-cc_library(
+cc_import(
     name = "libhwasan",
-    srcs = ["lib/libhwasan.so"],
+    shared_library = "lib/libhwasan.so",
 )
 
 # Other libraries
-cc_library(
+cc_import(
     name = "libquadmath",
-    srcs = ["lib/libquadmath.so"],
+    shared_library = "lib/libquadmath.so",
 )
 
-cc_library(
+cc_import(
     name = "libatomic",
-    srcs = ["lib/libatomic.so"],
+    shared_library = "lib/libatomic.so",
 )
 
-cc_library(
+cc_import(
     name = "libitm",
-    srcs = ["lib/libitm.so"],
+    shared_library = "lib/libitm.so",
 )
 
-cc_library(
+cc_import(
     name = "libssp",
-    srcs = ["lib/libssp.so"],
+    shared_library = "lib/libssp.so",
 )
 
-cc_library(
+cc_import(
     name = "libgomp",
-    srcs = ["lib/libgomp.so"],
+    shared_library = "lib/libgomp.so",
 )
 
 # Usr directory filegroup
