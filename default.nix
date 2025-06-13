@@ -119,9 +119,6 @@ let
       done;
     fi";
 
-  # Import build_bazel.nix to generate BUILD.bazel
-  buildBazel = import ./build_bazel.nix { inherit lib; };
-
 in
 pkgs.stdenv.mkDerivation {
   name = "bazel-sysroot-library-and-libs-amd64";
@@ -159,13 +156,9 @@ pkgs.stdenv.mkDerivation {
         ln -sf "$(readlink ${pkgs.gcc-unwrapped.lib}/lib/libgcc_s.so.1)" "$out/sysroot/lib/libgcc_s.so.1"
       fi
     fi
-  '';
 
-  installPhase = ''
-    mkdir -p $out/sysroot
-    # ... your existing install steps ...
-    # Generate and copy BUILD.bazel
-    cp ${buildBazel} $out/sysroot/BUILD.bazel
+    # The user should run generate_build_bazel.sh manually to create BUILD.bazel in sysroot
+    echo "Please run ./generate_build_bazel.sh > ./sysroot/BUILD.bazel after build to generate BUILD.bazel."
   '';
 
   meta = with pkgs.lib; {

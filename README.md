@@ -32,26 +32,43 @@ The sysroot combines two main components:
 
 ## Usage
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/randomizedcoder/bazel_sysroot_library_and_libs_amd64/
-   cd bazel_sysroot_library_and_libs_amd64
-   ```
+### Building the Sysroot
 
-2. View available options:
-   ```bash
-   make
-   ```
+To build the sysroot, run:
 
-3. Build the sysroot:
-   ```bash
-   make build
-   ```
+```bash
+make build
+```
 
-4. Copy the sysroot to the target location (requires sudo):
-   ```bash
-   make copy
-   ```
+This will create the sysroot in the `./sysroot` directory.
+
+### Generating BUILD.bazel
+
+After building the sysroot, you can generate a `BUILD.bazel` file that exposes all libraries and object files to Bazel. Run:
+
+```bash
+make generate-build
+```
+
+This will run the `generate_build_bazel.sh` script to create a `BUILD.bazel` file in the `./sysroot` directory. The generated file includes `cc_import` rules for all `.o`, `.a`, and `.so` files, making them available to Bazel builds.
+
+### Using the Sysroot in Bazel
+
+In your Bazel `WORKSPACE` file, add:
+
+```python
+local_repository(
+    name = "sysroot",
+    path = "/path/to/your/sysroot",
+)
+```
+
+Then, in your `BUILD` files, you can depend on the libraries using targets like `@sysroot//:asan` or `@sysroot//:atomic`.
+
+## Additional Information
+
+- The `generate_build_bazel.sh` script is used to create the `BUILD.bazel` file. It traverses the `./sysroot` directory and generates `cc_import` rules for all libraries and object files.
+- The generated `BUILD.bazel` file is designed to be maximally Bazel-friendly, exposing all libraries and object files for use in Bazel builds.
 
 ## Dependencies
 
