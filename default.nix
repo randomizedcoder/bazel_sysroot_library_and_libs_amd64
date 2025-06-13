@@ -157,8 +157,8 @@ pkgs.stdenv.mkDerivation {
       fi
     fi
 
-    # Copy BUILD.bazel file
-    cp "${./bazel/BUILD.bazel}" "$out/sysroot/BUILD.bazel"
+    # The user should run generate_build_bazel.sh manually to create BUILD.bazel in sysroot
+    echo "Please run ./generate_build_bazel.sh > ./sysroot/BUILD.bazel after build to generate BUILD.bazel."
   '';
 
   meta = with pkgs.lib; {

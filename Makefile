@@ -2,20 +2,20 @@
 # Makefile
 #
 
-.PHONY: help update-flake build tarball push update-all nix-tarball clean copy
+.PHONY: help update-flake build tarball push update-all nix-tarball clean copy generate-build
 
 # Default target
 help:
 	@echo "Available targets:"
 	@echo "  update-flake  - Update flake.lock with latest dependencies"
-	@echo "  build        - Build the common library sysroot using nix build"
-	@echo "  tarball      - Create a .tar.gz archive of the common library sysroot"
-	@echo "  push         - Push changes to GitHub with dated commit"
-	@echo "  update-all   - Update flake, build, copy, and push"
-	@echo "  nix-tarball  - Create a .tar.gz archive of the common library sysroot using nix"
-	@echo "  copy         - Copy files from Nix store to sysroot directory"
-	@echo "  clean        - Clean up build artifacts"
-	@echo "  help         - Show this help message"
+	@echo "  build        - Build the sysroot using Nix"
+	@echo "  generate-build - Generate BUILD.bazel from sysroot contents"
+	@echo "  tarball      - Create a tarball of the sysroot"
+	@echo "  push         - Push the tarball to a remote location"
+	@echo "  update-all   - Update flake and rebuild"
+	@echo "  nix-tarball  - Create a tarball using Nix"
+	@echo "  clean        - Clean build artifacts"
+	@echo "  copy         - Copy the sysroot to a local directory"
 
 update-flake:
 	nix flake update
@@ -49,6 +49,9 @@ copy: build
 	echo "Updating the sysroot file list"
 	find ./sysroot > sysroot_file_list.txt
 
+	echo "Update the BUILD.bazel file"
+	$(MAKE) generate-build
+
 push:
 	git add .
 	git commit -m "Update common library sysroot $(shell date +%Y-%m-%d)" || true
@@ -61,6 +64,13 @@ clean:
 	rm -f bazel-sysroot-library.tar.gz
 	rm -rf result result-*
 	rm -rf sysroot
+
+generate-build:
+	@echo "Generating BUILD.bazel..."
+	./generate_build_bazel.sh > ./sysroot/BUILD.bazel
+
+shellcheck:
+	nix-shell -p shellcheck --run "shellcheck ./generate_build_bazel.sh"
 
 # Show help by default
 .DEFAULT_GOAL := help
