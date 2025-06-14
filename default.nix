@@ -79,7 +79,7 @@ pkgs.stdenv.mkDerivation {
         echo "Copying include files from (generic) ${pkg} to $out/sysroot/include/"
         # rsync -rL is like cp -RL (recursive, dereference symlinks)
         # --no-perms, --no-owner, --no-group aim to mimic cp --no-preserve=mode,ownership.
-        rsync -rL --no-perms --no-owner --no-group "${pkg}/include/" "$out/sysroot/include/" || true
+        rsync --recursive --copy-links --no-perms --no-owner --no-group "${pkg}/include/" "$out/sysroot/include/" || true
       else
         echo "Info: Package ${pkg} does not have an /include directory, skipping include copy."
       fi
@@ -87,7 +87,7 @@ pkgs.stdenv.mkDerivation {
       if [ -d "${pkg}/lib" ]; then
         echo "Copying lib files from ${pkg} to $out/sysroot/lib/ (excluding .pc, .la, pkgconfig/, cmake/)"
         # Explicitly using -rL and --no-perms, --no-owner, --no-group.
-        rsync -rL --no-perms --no-owner --no-group \
+        rsync --recursive --copy-links --no-perms --no-owner --no-group \
           --exclude='*.pc' \
           --exclude='*.la' \
           --exclude='pkgconfig/' \

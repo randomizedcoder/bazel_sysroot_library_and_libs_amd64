@@ -40,7 +40,7 @@ tarball:
 copy: build
 	rm -rf sysroot
 	mkdir -p sysroot
-	rsync -av result/sysroot/ sysroot/
+	rsync -av --copy-links result/sysroot/ sysroot/
 
 	echo "Setting permissions on the sysroot files"
 	chmod -R 755 sysroot
