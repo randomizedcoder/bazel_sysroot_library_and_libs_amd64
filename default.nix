@@ -11,6 +11,9 @@ let
     # Core C system libraries (glibc is standard on Linux, Clang uses it)
     glibc glibc.dev glibc.static
 
+    # GCC runtime libraries (needed for libgcc_s)
+    gcc gcc.cc gcc.cc.lib
+
     # LLVM C++ Standard Library, compiler runtime, and unwind library
     llvm.libcxx          # Provides libc++.so, libc++.a (libraries)
     llvm.libcxx.dev      # Provides C++ headers
