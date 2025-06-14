@@ -20,9 +20,8 @@ collect_libs() {
   relative_path="${path#./sysroot/}"
 
   # Clean up the name
-  # Remove lib prefix and extension
-  name="${entry#lib}"
-  name="${name%.*}"
+  # Keep lib prefix, just remove extension
+  name="${entry%.*}"
 
   if is_directory "$path"; then
     local f
