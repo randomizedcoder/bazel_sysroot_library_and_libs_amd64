@@ -91,7 +91,10 @@ pkgs.stdenv.mkDerivation {
         echo "Copying include files from (generic) ${pkg} to $out/sysroot/include/"
         # rsync -rL is like cp -RL (recursive, dereference symlinks)
         # --no-perms, --no-owner, --no-group aim to mimic cp --no-preserve=mode,ownership.
-        rsync --recursive --copy-links --no-perms --no-owner --no-group "${pkg}/include/" "$out/sysroot/include/" || true
+        rsync --recursive --copy-links --no-perms --no-owner --no-group \
+          --exclude='c++/14.*' \
+          --exclude='c++/gcc*' \
+          "${pkg}/include/" "$out/sysroot/include/" || true
       else
         echo "Info: Package ${pkg} does not have an /include directory, skipping include copy."
       fi
