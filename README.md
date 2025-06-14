@@ -2,6 +2,27 @@
 
 This repository contains a Nix derivation that creates a sysroot for Bazel C/C++ builds on AMD64 Linux systems. It provides a simplified set of libraries and headers that are commonly needed for C/C++ development.
 
+## Design Decisions
+
+### C++ Standard Library Choice: libc++ over libstdc++
+
+This sysroot is configured to use LLVM's libc++ as the C++ standard library implementation, rather than GCC's libstdc++. This decision was made for several reasons:
+
+1. **Consistency with LLVM Toolchain**: Since we're using the LLVM toolchain (via `toolchains_llvm`), using libc++ provides better integration and compatibility.
+
+2. **Avoiding Mixed Implementations**: The sysroot explicitly excludes libstdc++ headers (using rsync exclude patterns for `c++/14.*` and `c++/gcc*`) to prevent any potential conflicts or confusion between different C++ standard library implementations.
+
+3. **Cleaner Build Configuration**: By using only libc++, we can simplify our build configurations and avoid potential issues that might arise from mixing different C++ standard library implementations.
+
+To use this sysroot, ensure your BUILD.bazel files are configured to use libc++:
+```python
+copts = [
+    "-stdlib=libc++",
+    "-isystem", "external/+_repo_rules+bazel_sysroot_library_and_libs_amd64/sysroot/include/c++/v1",
+    # ... other include paths ...
+]
+```
+
 ## What's Included
 
 The sysroot includes:
