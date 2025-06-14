@@ -1,4 +1,3 @@
-/* GNU ld script
-*/
+/* GNU ld script */
 OUTPUT_FORMAT(elf64-x86-64)
-GROUP ( /nix/store/cg9s562sa33k78m63njfn1rw47dp9z0i-glibc-2.40-66/lib/libm.so.6  AS_NEEDED ( /nix/store/cg9s562sa33k78m63njfn1rw47dp9z0i-glibc-2.40-66/lib/libmvec.so.1 ) )
+GROUP ( libm.so.6 AS_NEEDED ( libc.so.6 ld-linux-x86-64.so.2 ) )

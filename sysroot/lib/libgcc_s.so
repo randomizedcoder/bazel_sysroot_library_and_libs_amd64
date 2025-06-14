@@ -1,4 +1,3 @@
-/* GNU ld script
-   Use the shared library, but some functions are only in
-   the static library.  */
-GROUP ( libgcc_s.so.1 -lgcc )
+/* GNU ld script */
+OUTPUT_FORMAT(elf64-x86-64)
+GROUP ( libgcc_s.so.1 AS_NEEDED ( libc.so.6 ld-linux-x86-64.so.2 ) )
