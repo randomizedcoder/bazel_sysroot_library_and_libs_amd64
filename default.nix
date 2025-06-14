@@ -70,35 +70,26 @@ pkgs.stdenv.mkDerivation {
     mkdir -p "$out/sysroot/lib"
 
     echo "Copying files from commonLibs to sysroot..."
-    # The specific LLVM libc++ header copy block has been removed.
-    # Includes from llvm.libcxx will now be handled by the generic loop below.
 
     ${pkgs.lib.concatMapStringsSep "\n" (pkg: ''
-      # Generic include copy.
-      # Now also processes llvm.libcxx's includes.
       if [ -d "${pkg}/include" ]; then # Check if the package has an include directory
         echo "Copying include files from (generic) ${pkg} to $out/sysroot/include/"
         # rsync -rL is like cp -RL (recursive, dereference symlinks)
         # --no-perms, --no-owner, --no-group aim to mimic cp --no-preserve=mode,ownership.
-        ls -al "${pkg}/include/" || echo "Info: No include directory or cannot list ${pkg}/include/"
         rsync -rL --no-perms --no-owner --no-group "${pkg}/include/" "$out/sysroot/include/" || true
-        ls -al "$out/sysroot/include/" || echo "Info: Cannot list $out/sysroot/include/ after include copy"
       else
         echo "Info: Package ${pkg} does not have an /include directory, skipping include copy."
       fi
 
       if [ -d "${pkg}/lib" ]; then
         echo "Copying lib files from ${pkg} to $out/sysroot/lib/ (excluding .pc, .la, pkgconfig/, cmake/)"
-        # Removed -a (archive mode) to avoid preserving permissions/timestamps by default from -a.
         # Explicitly using -rL and --no-perms, --no-owner, --no-group.
-        ls -al "${pkg}/lib/" || echo "Info: No lib directory or cannot list ${pkg}/lib/"
         rsync -rL --no-perms --no-owner --no-group \
           --exclude='*.pc' \
           --exclude='*.la' \
           --exclude='pkgconfig/' \
           --exclude='cmake/' \
           "${pkg}/lib/" "$out/sysroot/lib/" || true
-        ls -al "$out/sysroot/lib/" || echo "Info: Cannot list $out/sysroot/lib/ after lib copy"
       else
         echo "Info: Package ${pkg} does not have a /lib directory, skipping lib copy."
       fi
