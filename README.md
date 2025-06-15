@@ -10,7 +10,7 @@ This sysroot is configured to use LLVM's libc++ as the C++ standard library impl
 
 1. **Consistency with LLVM Toolchain**: Since we're using the LLVM toolchain (via `toolchains_llvm`), using libc++ provides better integration and compatibility.
 
-2. **Avoiding Mixed Implementations**: The sysroot explicitly excludes libstdc++ headers (using rsync exclude patterns for `c++/14.*` and `c++/gcc*`) to prevent any potential conflicts or confusion between different C++ standard library implementations.
+2. **Avoiding Mixed Implementations**: The sysroot explicitly excludes libstdc++ headers (using rsync exclude patterns for `c++/14.*` and `c++/gcc*`) to prevent any potential conflicts or confusion between different C++ standard library implementations.  Also excluded from /lib/ are patterns `libstdc++.*` and `libsupc++.*` to ensure GCC's libstdc++ is not included.
 
 3. **Cleaner Build Configuration**: By using only libc++, we can simplify our build configurations and avoid potential issues that might arise from mixing different C++ standard library implementations.
 

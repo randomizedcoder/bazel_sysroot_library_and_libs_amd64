@@ -1,3 +1,3 @@
 /* GNU ld script */
 OUTPUT_FORMAT(elf64-x86-64)
-GROUP ( libubsan.so.1.0.0 AS_NEEDED ( libdl.so.2 librt.so.1 libpthread.so.0 libstdc++.so.6 libm.so.6 libc.so.6 libgcc_s.so.1 ) )
+GROUP ( libubsan.so.1.0.0 AS_NEEDED ( libdl.so.2 librt.so.1 libpthread.so.0 libm.so.6 libc.so.6 libgcc_s.so.1 ) )
