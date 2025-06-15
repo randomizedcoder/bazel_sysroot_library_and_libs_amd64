@@ -21,10 +21,10 @@ update-flake:
 	nix flake update
 
 build:
-	nix build
+	nix --max-jobs 100 build
 
 build_debug:
-	nix --max-jobs 100 -vv build
+	nix -L --max-jobs 100 -vv build
 #nix --max-jobs 100 -vvv build
 
 # Create tarball using nix
@@ -40,7 +40,22 @@ tarball:
 copy: build
 	rm -rf sysroot
 	mkdir -p sysroot
-	rsync -av --copy-links result/sysroot/ sysroot/
+
+	rsync --recursive --copy-links --no-perms --no-owner --no-group \
+		--exclude='c++/14.*' \
+		--exclude='c++/gcc*' \
+		--verbose \
+		--prune-empty-dirs \
+		result/sysroot/ sysroot/
+
+	# Copy libc++ headers from result-dev
+	echo "Copying libc++ headers from result-dev..."
+	rsync --recursive --copy-links --no-perms --no-owner --no-group \
+		--exclude='c++/14.*' \
+		--exclude='c++/gcc*' \
+		--verbose \
+		--prune-empty-dirs \
+		result-dev/include/  sysroot/include/
 
 	echo "Setting permissions on the sysroot files"
 	chmod -R 755 sysroot
