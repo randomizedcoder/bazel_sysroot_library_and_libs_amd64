@@ -28,12 +28,6 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.memprof-preinit-x86_64",
-  static_library = "lib/linux/libclang_rt.memprof-preinit-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "crtprec32",
   objects = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtprec32.o"],
   visibility = ["//visibility:public"],
@@ -54,30 +48,6 @@ cc_import(
 cc_import(
   name = "crtbeginS",
   objects = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtbeginS.o"],
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.xray-basic-x86_64",
-  static_library = "lib/linux/libclang_rt.xray-basic-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.builtins-x86_64",
-  static_library = "lib/linux/libclang_rt.builtins-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.xray-profiling-x86_64",
-  static_library = "lib/linux/libclang_rt.xray-profiling-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.memprof_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.memprof_cxx-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -162,12 +132,6 @@ cc_import(
 )
 
 cc_import(
-  name = "clang_rt.crtbegin-x86_64",
-  objects = ["lib/linux/clang_rt.crtbegin-x86_64.o"],
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "crtendS",
   objects = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtendS.o"],
   visibility = ["//visibility:public"],
@@ -176,19 +140,6 @@ cc_import(
 cc_import(
   name = "libpcre2-posix",
   shared_library = "lib/libpcre2-posix.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libc++abi",
-  static_library = "lib/libc++abi.a",
-  shared_library = "lib/libc++abi.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.xray-dso-x86_64",
-  static_library = "lib/linux/libclang_rt.xray-dso-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -209,42 +160,6 @@ cc_import(
   name = "libubsan",
   static_library = "lib/libubsan.a",
   shared_library = "lib/libubsan.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.hwasan_aliases_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.hwasan_aliases_cxx-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libc++experimental",
-  static_library = "lib/libc++experimental.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.cfi_diag-x86_64",
-  static_library = "lib/linux/libclang_rt.cfi_diag-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.fuzzer_interceptors-x86_64",
-  static_library = "lib/linux/libclang_rt.fuzzer_interceptors-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.stats-x86_64",
-  static_library = "lib/linux/libclang_rt.stats-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.fuzzer-x86_64",
-  static_library = "lib/linux/libclang_rt.fuzzer-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -280,32 +195,15 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.msan-x86_64",
-  static_library = "lib/linux/libclang_rt.msan-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.ubsan_standalone-x86_64",
-  static_library = "lib/linux/libclang_rt.ubsan_standalone-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libgcc",
   static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc.a",
   visibility = ["//visibility:public"],
 )
 
 cc_import(
-  name = "libclang_rt.memprof-x86_64",
-  static_library = "lib/linux/libclang_rt.memprof-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.nsan-x86_64",
-  static_library = "lib/linux/libclang_rt.nsan-x86_64.a",
+  name = "libstdc++",
+  static_library = "lib/libstdc++.a",
+  shared_library = "lib/libstdc++.so",
   visibility = ["//visibility:public"],
 )
 
@@ -334,26 +232,8 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.dd-x86_64",
-  static_library = "lib/linux/libclang_rt.dd-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libssp_nonshared",
   static_library = "lib/libssp_nonshared.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.cfi-x86_64",
-  static_library = "lib/linux/libclang_rt.cfi-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.hwasan-x86_64",
-  static_library = "lib/linux/libclang_rt.hwasan-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -383,13 +263,6 @@ cc_import(
 )
 
 cc_import(
-  name = "libc++",
-  static_library = "lib/libc++.a",
-  shared_library = "lib/libc++.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libpcre2-32",
   shared_library = "lib/libpcre2-32.so",
   visibility = ["//visibility:public"],
@@ -399,12 +272,6 @@ cc_import(
   name = "libpthread",
   static_library = "lib/libpthread.a",
   shared_library = "lib/libpthread.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.stats_client-x86_64",
-  static_library = "lib/linux/libclang_rt.stats_client-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -434,20 +301,8 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.safestack-x86_64",
-  static_library = "lib/linux/libclang_rt.safestack-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "crt1",
   objects = ["lib/crt1.o"],
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.asan_static-x86_64",
-  static_library = "lib/linux/libclang_rt.asan_static-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -458,8 +313,8 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.scudo_standalone_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.scudo_standalone_cxx-x86_64.a",
+  name = "libsupc++",
+  static_library = "lib/libsupc++.a",
   visibility = ["//visibility:public"],
 )
 
@@ -479,36 +334,6 @@ cc_import(
 cc_import(
   name = "libgcc_eh",
   static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc_eh.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.ubsan_minimal-x86_64",
-  static_library = "lib/linux/libclang_rt.ubsan_minimal-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.asan-x86_64",
-  static_library = "lib/linux/libclang_rt.asan-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.msan_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.msan_cxx-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "liborc_rt-x86_64",
-  static_library = "lib/linux/liborc_rt-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.tysan-x86_64",
-  static_library = "lib/linux/libclang_rt.tysan-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -537,18 +362,6 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.tsan_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.tsan_cxx-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "clang_rt.crtend-x86_64",
-  objects = ["lib/linux/clang_rt.crtend-x86_64.o"],
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libsqlite3",
   shared_library = "lib/libsqlite3.so",
   visibility = ["//visibility:public"],
@@ -569,18 +382,6 @@ cc_import(
 cc_import(
   name = "libhwasan_preinit",
   objects = ["lib/libhwasan_preinit.o"],
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.asan-preinit-x86_64",
-  static_library = "lib/linux/libclang_rt.asan-preinit-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.tsan-x86_64",
-  static_library = "lib/linux/libclang_rt.tsan-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -616,12 +417,6 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.gwp_asan-x86_64",
-  static_library = "lib/linux/libclang_rt.gwp_asan-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "grcrt1",
   objects = ["lib/grcrt1.o"],
   visibility = ["//visibility:public"],
@@ -640,27 +435,9 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.hwasan_aliases-x86_64",
-  static_library = "lib/linux/libclang_rt.hwasan_aliases-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.rtsan-x86_64",
-  static_library = "lib/linux/libclang_rt.rtsan-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "liblsan",
   static_library = "lib/liblsan.a",
   shared_library = "lib/liblsan.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.ctx_profile-x86_64",
-  static_library = "lib/linux/libclang_rt.ctx_profile-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -678,38 +455,8 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.dfsan-x86_64",
-  static_library = "lib/linux/libclang_rt.dfsan-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.scudo_standalone-x86_64",
-  static_library = "lib/linux/libclang_rt.scudo_standalone-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libstdc++exp",
   static_library = "lib/libstdc++exp.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.fuzzer_no_main-x86_64",
-  static_library = "lib/linux/libclang_rt.fuzzer_no_main-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.xray-fdr-x86_64",
-  static_library = "lib/linux/libclang_rt.xray-fdr-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.asan_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.asan_cxx-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -728,38 +475,8 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.ubsan_standalone_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.ubsan_standalone_cxx-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.xray-x86_64",
-  static_library = "lib/linux/libclang_rt.xray-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.profile-x86_64",
-  static_library = "lib/linux/libclang_rt.profile-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.lsan-x86_64",
-  static_library = "lib/linux/libclang_rt.lsan-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libpcre2-8",
   shared_library = "lib/libpcre2-8.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libclang_rt.hwasan_cxx-x86_64",
-  static_library = "lib/linux/libclang_rt.hwasan_cxx-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
@@ -782,21 +499,8 @@ cc_import(
 )
 
 cc_import(
-  name = "libclang_rt.hwasan-preinit-x86_64",
-  static_library = "lib/linux/libclang_rt.hwasan-preinit-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libpng16",
   shared_library = "lib/libpng16.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libunwind",
-  static_library = "lib/libunwind.a",
-  shared_library = "lib/libunwind.so",
   visibility = ["//visibility:public"],
 )
 

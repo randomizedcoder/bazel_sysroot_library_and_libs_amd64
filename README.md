@@ -4,17 +4,15 @@ This repository contains a Nix derivation that creates a sysroot for Bazel C/C++
 
 ## Design Decisions
 
-### C++ Standard Library Choice: libc++ over libstdc++
+### C++ Standard Library Choice: libstdc++ (GCC) over libc++ (LLVM)
 
-This sysroot is configured to use LLVM's libc++ as the C++ standard library implementation, rather than GCC's libstdc++. This decision was made for several reasons:
+This sysroot is configured to use GCC's libstdc++ as the C++ standard library implementation. This decision was made for the following reasons:
 
-1. **Consistency with LLVM Toolchain**: Since we're using the LLVM toolchain (via `toolchains_llvm`), using libc++ provides better integration and compatibility.
+1. **Addressing Sysroot Compatibility**: This change aims to resolve issues encountered with a Clang/libc++ based sysroot and improve compatibility, particularly when GCC is the primary toolchain.
+2. **GCC Toolchain Preference**: The sysroot now prioritizes components from the GCC toolchain, including its C++ standard library (`libstdc++`).
+3. **Inclusion of libstdc++ Components**: The sysroot build process ensures that GCC's C++ headers (e.g., from `gcc.cc.dev`) and libraries (`libstdc++.so.*`, `libstdc++.a`, `libsupc++.a` from `gcc.cc.lib`) are included. Previous `rsync` exclusions that prevented these from being copied (like `c++/gcc*`, `libstdc++.*`) have been removed.
 
-2. **Avoiding Mixed Implementations**: The sysroot explicitly excludes libstdc++ headers (using rsync exclude patterns for `c++/14.*` and `c++/gcc*`) to prevent any potential conflicts or confusion between different C++ standard library implementations.  Also excluded from /lib/ are patterns `libstdc++.*` and `libsupc++.*` to ensure GCC's libstdc++ is not included.
-
-3. **Cleaner Build Configuration**: By using only libc++, we can simplify our build configurations and avoid potential issues that might arise from mixing different C++ standard library implementations.
-
-To use this sysroot, ensure your BUILD.bazel files are configured to use libc++:
+To use this sysroot with Bazel, ensure your toolchain is configured for GCC. Typically, no special `-stdlib` flag is needed if `g++` is your compiler, as it defaults to libstdc++. Your include paths should point to the sysroot's include directory:
 ```python
 copts = [
     "-stdlib=libc++",
