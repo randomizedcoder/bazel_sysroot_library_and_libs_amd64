@@ -5,22 +5,25 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  llvm = pkgs.llvmPackages_20;
+  #llvm = pkgs.llvmPackages_20;
 
   commonLibs = with pkgs; [
     # Core C system libraries (glibc is standard on Linux, Clang uses it)
     glibc glibc.dev glibc.static
 
-    # GCC runtime libraries (needed for libgcc_s)
-    gcc gcc.cc gcc.cc.lib
+    # GCC runtime libraries, C++ Standard Library, and C++ headers
+    gcc                  # Provides libgcc_s.so (from gcc.lib), and the gcc compiler itself
+    gcc.cc               # Provides the g++ compiler toolchain
+    gcc.cc.lib           # Provides libstdc++.so, libsupc++.a (GCC's C++ standard library)
+    libgcc               # Provides C++ headers for libstdc++ (e.g. <vector>)
 
-    # LLVM C++ Standard Library, compiler runtime, and unwind library
-    llvm.libcxx          # Provides libc++.so, libc++.a (libraries)
-    llvm.libcxx.dev      # Provides C++ headers
-    llvm.compiler-rt     # Provides libclang_rt.builtins*.a
-    llvm.compiler-rt.dev # Provides libclang_rt headers
-    llvm.libunwind       # Provides libunwind for exception handling
-    llvm.libunwind.dev   # Provides libunwind headers
+    # # LLVM C++ Standard Library, compiler runtime, and unwind library
+    # llvm.libcxx          # Provides libc++.so, libc++.a (libraries)
+    # llvm.libcxx.dev      # Provides C++ headers
+    # llvm.compiler-rt     # Provides libclang_rt.builtins*.a
+    # llvm.compiler-rt.dev # Provides libclang_rt headers
+    # llvm.libunwind       # Provides libunwind for exception handling
+    # llvm.libunwind.dev   # Provides libunwind headers
 
     # Compression libraries (compiler-agnostic)
     zlib zlib.dev zlib.static
@@ -92,8 +95,6 @@ pkgs.stdenv.mkDerivation {
         # rsync -rL is like cp -RL (recursive, dereference symlinks)
         # --no-perms, --no-owner, --no-group aim to mimic cp --no-preserve=mode,ownership.
         rsync --recursive --copy-links --no-perms --no-owner --no-group \
-          --exclude='c++/14.*' \
-          --exclude='c++/gcc*' \
           --verbose \
           --prune-empty-dirs \
           "${pkg}/include/" "$out/sysroot/include/" || true
@@ -112,8 +113,6 @@ pkgs.stdenv.mkDerivation {
           --exclude='pkgconfig/' \
           --exclude='cmake/' \
           --exclude='*.so' \
-          --exclude='libstdc++.*' \
-          --exclude='libsupc++.*' \
           "${pkg}/lib/" "$out/sysroot/lib/" || true
       else
         echo "Info: Package ${pkg} does not have a /lib directory, skipping lib copy."
