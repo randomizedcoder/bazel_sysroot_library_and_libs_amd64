@@ -23,7 +23,6 @@
 ./sysroot/lib/libc.a
 ./sysroot/lib/libunwind.a
 ./sysroot/lib/libquadmath.a
-./sysroot/lib/libstdc++.so.6.0.33
 ./sysroot/lib/liblsan.so.0
 ./sysroot/lib/libssl.so
 ./sysroot/lib/libpcre2-8.so
@@ -57,11 +56,9 @@
 ./sysroot/lib/libnss_hesiod.so
 ./sysroot/lib/libc.so.6
 ./sysroot/lib/libatomic.so
-./sysroot/lib/libstdc++.a
 ./sysroot/lib/grcrt1.o
 ./sysroot/lib/libunwind.so.1.0
 ./sysroot/lib/libcrypto.so
-./sysroot/lib/libstdc++.so.6.0.33-gdb.py
 ./sysroot/lib/libitm.spec
 ./sysroot/lib/libgomp.so
 ./sysroot/lib/libsqlite3.so.0.8.6
@@ -75,7 +72,6 @@
 ./sysroot/lib/libjansson.so.4
 ./sysroot/lib/libexpat.so.1.10.2
 ./sysroot/lib/libBrokenLocale.a
-./sysroot/lib/libsupc++.a
 ./sysroot/lib/libm.so
 ./sysroot/lib/libthread_db.so
 ./sysroot/lib/libz.so.1
@@ -125,8 +121,6 @@
 ./sysroot/lib/libc++abi.a
 ./sysroot/lib/libanl.a
 ./sysroot/lib/rcrt1.o
-./sysroot/lib/libstdc++.so.6
-./sysroot/lib/libstdc++.so
 ./sysroot/lib/gconv
 ./sysroot/lib/gconv/gconv-modules.d
 ./sysroot/lib/gconv/gconv-modules.d/gconv-modules-extra.conf

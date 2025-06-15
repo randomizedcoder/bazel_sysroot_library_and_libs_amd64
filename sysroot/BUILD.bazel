@@ -310,13 +310,6 @@ cc_import(
 )
 
 cc_import(
-  name = "libstdc++",
-  static_library = "lib/libstdc++.a",
-  shared_library = "lib/libstdc++.so",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
   name = "libnss_files",
   shared_library = "lib/libnss_files.so",
   visibility = ["//visibility:public"],
@@ -467,12 +460,6 @@ cc_import(
 cc_import(
   name = "libclang_rt.scudo_standalone_cxx-x86_64",
   static_library = "lib/linux/libclang_rt.scudo_standalone_cxx-x86_64.a",
-  visibility = ["//visibility:public"],
-)
-
-cc_import(
-  name = "libsupc++",
-  static_library = "lib/libsupc++.a",
   visibility = ["//visibility:public"],
 )
 

@@ -89,12 +89,6 @@ pkgs.stdenv.mkDerivation {
     ${pkgs.lib.concatMapStringsSep "\n" (pkg: ''
       if [ -d "${pkg}/include" ]; then # Check if the package has an include directory
         echo "Copying include files from (generic) ${pkg} to $out/sysroot/include/"
-        echo "Package path: ${pkg}"
-        echo "Checking for libc++ headers..."
-        if [ -d "${pkg}/include/c++/v1" ]; then
-          echo "Found libc++ headers in ${pkg}/include/c++/v1"
-          ls -la "${pkg}/include/c++/v1/__memory" || echo "No __memory directory found"
-        fi
         # rsync -rL is like cp -RL (recursive, dereference symlinks)
         # --no-perms, --no-owner, --no-group aim to mimic cp --no-preserve=mode,ownership.
         rsync --recursive --copy-links --no-perms --no-owner --no-group \
@@ -103,8 +97,6 @@ pkgs.stdenv.mkDerivation {
           --verbose \
           --prune-empty-dirs \
           "${pkg}/include/" "$out/sysroot/include/" || true
-        echo "After rsync, checking destination:"
-        ls -la "$out/sysroot/include/c++/v1/__memory" || echo "No __memory directory in destination"
       else
         echo "Info: Package ${pkg} does not have an /include directory, skipping include copy."
       fi
@@ -113,12 +105,15 @@ pkgs.stdenv.mkDerivation {
         echo "Copying lib files from ${pkg} to $out/sysroot/lib/ (excluding .pc, .la, pkgconfig/, cmake/, and .so files)"
         # Explicitly using --recursive --copy-links and --no-perms, --no-owner, --no-group.
         # Exclude .so files (linker scripts) but keep .so.X.Y.Z files (actual shared libraries)
+        # Exclude gcc's libstdc++ and libsupc++
         rsync --recursive --copy-links --no-perms --no-owner --no-group \
           --exclude='*.pc' \
           --exclude='*.la' \
           --exclude='pkgconfig/' \
           --exclude='cmake/' \
           --exclude='*.so' \
+          --exclude='libstdc++.*' \
+          --exclude='libsupc++.*' \
           "${pkg}/lib/" "$out/sysroot/lib/" || true
       else
         echo "Info: Package ${pkg} does not have a /lib directory, skipping lib copy."
