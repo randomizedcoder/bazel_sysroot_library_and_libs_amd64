@@ -11,7 +11,7 @@ This sysroot is configured to use GCC's libstdc++ as the C++ standard library im
 1. **Addressing Sysroot Compatibility**: This change aims to resolve issues encountered with a Clang/libc++ based sysroot and improve compatibility, particularly when GCC is the primary toolchain.
 2. **GCC Toolchain Preference**: The sysroot now prioritizes components from the GCC toolchain, including its C++ standard library (`libstdc++`).
 3. **Inclusion of libstdc++ Components**: The sysroot build process ensures that GCC's C++ headers (e.g., from `gcc.cc.dev`) and libraries (`libstdc++.so.*`, `libstdc++.a`, `libsupc++.a` from `gcc.cc.lib`) are included. Previous `rsync` exclusions that prevented these from being copied (like `c++/gcc*`, `libstdc++.*`) have been removed.
-
+3. **Inclusion of libstdc++ Components**: The sysroot build process ensures that GCC's C++ headers (e.g., from `gcc-unwrapped.dev`) and libraries (`libstdc++.so.*`, `libstdc++.a`, `libsupc++.a` from `gcc`'s default output path, specifically its `lib/` subdirectory) are included. Previous `rsync` exclusions that prevented these from being copied (like `c++/gcc*`, `libstdc++.*`) have been removed.
 To use this sysroot with Bazel, ensure your toolchain is configured for GCC. Typically, no special `-stdlib` flag is needed if `g++` is your compiler, as it defaults to libstdc++. Your include paths should point to the sysroot's include directory:
 ```python
 copts = [
@@ -25,12 +25,7 @@ copts = [
 
 The sysroot includes:
 
-- Core C system libraries (glibc)
-- GCC runtime libraries
-- LLVM C++ Standard Library and compiler runtime
-- Common compression libraries (zlib, bzip2, xz, zstd)
-- XML and parsing libraries (libxml2, expat)
-- Networking libraries (openssl, curl)
+- GCC runtime libraries and its C++ Standard Library (libstdc++)
 - Text processing libraries (pcre, pcre2)
 - JSON library (jansson)
 - Database library (sqlite)
@@ -84,10 +79,12 @@ To use this sysroot in your Bazel project:
 2. The sysroot will be created in `./sysroot/` with the following structure:
    ```
    sysroot/
-   ├── include/  # Header files
-   └── lib/      # Library files
-       ├── *.so  # Linker scripts
+   ├── include/   # Header files
+   └── lib/       # Library files
+       ├── *.so   # Linker scripts for shared libraries
        └── *.so.* # Versioned shared libraries
+       └── *.a    # Static libraries
+
    ```
 
 3. Configure Bazel to use this sysroot by setting the appropriate compiler and linker flags.
@@ -196,7 +193,8 @@ When writing BUILD.bazel rules for this sysroot, be aware:
 
 - For startup files (such as crt1.o, crti.o, crtbeginS.o, crtendS.o, crtn.o), you must use the `objects` attribute of `cc_import` instead of `static_library`. This is because Bazel expects `static_library` to be an archive (.a or .lib), not a single object file (.o).
 - For static libraries (.a), use the `static_library` attribute.
-- For shared libraries (.so), use the `shared_library` attribute.
+- **Note**: Most third-party libraries in this sysroot are provided as shared libraries. Static versions (`.a` files) are generally included only for core components like glibc, libstdc++, zlib, and OpenSSL.
+- For shared libraries (represented by `.so` linker scripts in this sysroot), use the `shared_library` attribute.
 
 Example:
 ```python
@@ -270,3 +268,9 @@ This approach ensures that:
 - The sysroot is completely independent of the Nix store
 - All shared libraries can be found using relative paths
 - The sysroot remains hermetic and portable
+
+## Additional reading
+
+(https://nixos.wiki/wiki/C)[https://nixos.wiki/wiki/C]
+
+https://registry.bazel.build/modules/pkg-config

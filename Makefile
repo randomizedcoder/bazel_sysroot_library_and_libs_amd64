@@ -7,24 +7,25 @@
 # Default target
 help:
 	@echo "Available targets:"
-	@echo "  update-flake  - Update flake.lock with latest dependencies"
-	@echo "  build        - Build the sysroot using Nix"
-	@echo "  generate-build - Generate BUILD.bazel from sysroot contents"
-	@echo "  tarball      - Create a tarball of the sysroot"
-	@echo "  push         - Push the tarball to a remote location"
-	@echo "  update-all   - Update flake and rebuild"
-	@echo "  nix-tarball  - Create a tarball using Nix"
-	@echo "  clean        - Clean build artifacts"
-	@echo "  copy         - Copy the sysroot to a local directory"
+	@echo "  update-flake    - Update flake.lock with latest dependencies"
+	@echo "  build           - Build the sysroot using Nix"
+	@echo "  generate-build  - Generate BUILD.bazel from sysroot contents"
+	@echo "  tarball         - Create a tarball of the sysroot"
+	@echo "  push            - Push the tarball to a remote location"
+	@echo "  update-all      - Update flake and rebuild"
+	@echo "  nix-tarball     - Create a tarball using Nix"
+	@echo "  clean           - Clean build artifacts"
+	@echo "  copy            - Copy the sysroot to a local directory"
+	@echo "  verify-sysroot  - Verify the sysroot"
 
 update-flake:
 	nix flake update
 
 build:
-	nix --max-jobs 100 build
+	nix build
 
 build_debug:
-	nix -L --max-jobs 100 -vv build
+	nix -L -vv build
 #nix --max-jobs 100 -vvv build
 
 # Create tarball using nix
@@ -41,21 +42,21 @@ copy: build
 	rm -rf sysroot
 	mkdir -p sysroot
 
+	# dereference from the nix store into the repo
 	rsync --recursive --copy-links --no-perms --no-owner --no-group \
-		--exclude='c++/14.*' \
-		--exclude='c++/gcc*' \
 		--verbose \
 		--prune-empty-dirs \
 		result/sysroot/ sysroot/
 
-	# Copy libc++ headers from result-dev
-	echo "Copying libc++ headers from result-dev..."
-	rsync --recursive --copy-links --no-perms --no-owner --no-group \
-		--exclude='c++/14.*' \
-		--exclude='c++/gcc*' \
-		--verbose \
-		--prune-empty-dirs \
-		result-dev/include/  sysroot/include/
+	# # Copy libc++ headers from result-dev
+	# echo "Copying libc++ headers from result-dev..."
+	# rsync --recursive --copy-links --no-perms --no-owner --no-group \
+	# 	--verbose \
+	# 	--prune-empty-dirs \
+	# 	result-dev/include/  sysroot/include/
+
+	#	--exclude='c++/14.*' \
+	#	--exclude='c++/gcc*' \
 
 	echo "Setting permissions on the sysroot files"
 	chmod -R 755 sysroot
@@ -66,6 +67,9 @@ copy: build
 
 	echo "Update the BUILD.bazel file"
 	$(MAKE) generate-build
+
+	echo "Verifying the sysroot"
+	$(MAKE) verify-sysroot
 
 push:
 	git add .
@@ -86,6 +90,13 @@ generate-build:
 
 shellcheck:
 	nix-shell -p shellcheck --run "shellcheck ./generate_build_bazel.sh"
+
+verify-sysroot:
+	@echo "Verifying the sysroot..."
+	./verify_sysroot.bash
+
+verify-sysroot-not-found:
+	./verify_sysroot.bash | grep "Not found"
 
 # Show help by default
 .DEFAULT_GOAL := help

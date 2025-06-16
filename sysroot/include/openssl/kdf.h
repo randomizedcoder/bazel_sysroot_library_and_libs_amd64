@@ -1,138 +1,91 @@
-/*
- * Copyright 2016-2021 The OpenSSL Project Authors. All Rights Reserved.
+/* Copyright (c) 2022, Google Inc.
  *
- * Licensed under the Apache License 2.0 (the "License").  You may not use
- * this file except in compliance with the License.  You can obtain a copy
- * in the file LICENSE in the source distribution or at
- * https://www.openssl.org/source/license.html
- */
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+ * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE. */
 
-#ifndef OPENSSL_KDF_H
-# define OPENSSL_KDF_H
-# pragma once
+#ifndef OPENSSL_HEADER_KDF_H
+#define OPENSSL_HEADER_KDF_H
 
-# include <openssl/macros.h>
-# ifndef OPENSSL_NO_DEPRECATED_3_0
-#  define HEADER_KDF_H
-# endif
+#include <openssl/base.h>
 
-# include <stdarg.h>
-# include <stddef.h>
-# include <openssl/types.h>
-# include <openssl/core.h>
-
-# ifdef __cplusplus
+#if defined(__cplusplus)
 extern "C" {
-# endif
-
-int EVP_KDF_up_ref(EVP_KDF *kdf);
-void EVP_KDF_free(EVP_KDF *kdf);
-EVP_KDF *EVP_KDF_fetch(OSSL_LIB_CTX *libctx, const char *algorithm,
-                       const char *properties);
-
-EVP_KDF_CTX *EVP_KDF_CTX_new(EVP_KDF *kdf);
-void EVP_KDF_CTX_free(EVP_KDF_CTX *ctx);
-EVP_KDF_CTX *EVP_KDF_CTX_dup(const EVP_KDF_CTX *src);
-const char *EVP_KDF_get0_description(const EVP_KDF *kdf);
-int EVP_KDF_is_a(const EVP_KDF *kdf, const char *name);
-const char *EVP_KDF_get0_name(const EVP_KDF *kdf);
-const OSSL_PROVIDER *EVP_KDF_get0_provider(const EVP_KDF *kdf);
-const EVP_KDF *EVP_KDF_CTX_kdf(EVP_KDF_CTX *ctx);
-
-void EVP_KDF_CTX_reset(EVP_KDF_CTX *ctx);
-size_t EVP_KDF_CTX_get_kdf_size(EVP_KDF_CTX *ctx);
-int EVP_KDF_derive(EVP_KDF_CTX *ctx, unsigned char *key, size_t keylen,
-                   const OSSL_PARAM params[]);
-int EVP_KDF_get_params(EVP_KDF *kdf, OSSL_PARAM params[]);
-int EVP_KDF_CTX_get_params(EVP_KDF_CTX *ctx, OSSL_PARAM params[]);
-int EVP_KDF_CTX_set_params(EVP_KDF_CTX *ctx, const OSSL_PARAM params[]);
-const OSSL_PARAM *EVP_KDF_gettable_params(const EVP_KDF *kdf);
-const OSSL_PARAM *EVP_KDF_gettable_ctx_params(const EVP_KDF *kdf);
-const OSSL_PARAM *EVP_KDF_settable_ctx_params(const EVP_KDF *kdf);
-const OSSL_PARAM *EVP_KDF_CTX_gettable_params(EVP_KDF_CTX *ctx);
-const OSSL_PARAM *EVP_KDF_CTX_settable_params(EVP_KDF_CTX *ctx);
-
-void EVP_KDF_do_all_provided(OSSL_LIB_CTX *libctx,
-                             void (*fn)(EVP_KDF *kdf, void *arg),
-                             void *arg);
-int EVP_KDF_names_do_all(const EVP_KDF *kdf,
-                         void (*fn)(const char *name, void *data),
-                         void *data);
-
-# define EVP_KDF_HKDF_MODE_EXTRACT_AND_EXPAND  0
-# define EVP_KDF_HKDF_MODE_EXTRACT_ONLY        1
-# define EVP_KDF_HKDF_MODE_EXPAND_ONLY         2
-
-#define EVP_KDF_SSHKDF_TYPE_INITIAL_IV_CLI_TO_SRV     65
-#define EVP_KDF_SSHKDF_TYPE_INITIAL_IV_SRV_TO_CLI     66
-#define EVP_KDF_SSHKDF_TYPE_ENCRYPTION_KEY_CLI_TO_SRV 67
-#define EVP_KDF_SSHKDF_TYPE_ENCRYPTION_KEY_SRV_TO_CLI 68
-#define EVP_KDF_SSHKDF_TYPE_INTEGRITY_KEY_CLI_TO_SRV  69
-#define EVP_KDF_SSHKDF_TYPE_INTEGRITY_KEY_SRV_TO_CLI  70
-
-/**** The legacy PKEY-based KDF API follows. ****/
-
-# define EVP_PKEY_CTRL_TLS_MD                   (EVP_PKEY_ALG_CTRL)
-# define EVP_PKEY_CTRL_TLS_SECRET               (EVP_PKEY_ALG_CTRL + 1)
-# define EVP_PKEY_CTRL_TLS_SEED                 (EVP_PKEY_ALG_CTRL + 2)
-# define EVP_PKEY_CTRL_HKDF_MD                  (EVP_PKEY_ALG_CTRL + 3)
-# define EVP_PKEY_CTRL_HKDF_SALT                (EVP_PKEY_ALG_CTRL + 4)
-# define EVP_PKEY_CTRL_HKDF_KEY                 (EVP_PKEY_ALG_CTRL + 5)
-# define EVP_PKEY_CTRL_HKDF_INFO                (EVP_PKEY_ALG_CTRL + 6)
-# define EVP_PKEY_CTRL_HKDF_MODE                (EVP_PKEY_ALG_CTRL + 7)
-# define EVP_PKEY_CTRL_PASS                     (EVP_PKEY_ALG_CTRL + 8)
-# define EVP_PKEY_CTRL_SCRYPT_SALT              (EVP_PKEY_ALG_CTRL + 9)
-# define EVP_PKEY_CTRL_SCRYPT_N                 (EVP_PKEY_ALG_CTRL + 10)
-# define EVP_PKEY_CTRL_SCRYPT_R                 (EVP_PKEY_ALG_CTRL + 11)
-# define EVP_PKEY_CTRL_SCRYPT_P                 (EVP_PKEY_ALG_CTRL + 12)
-# define EVP_PKEY_CTRL_SCRYPT_MAXMEM_BYTES      (EVP_PKEY_ALG_CTRL + 13)
-
-# define EVP_PKEY_HKDEF_MODE_EXTRACT_AND_EXPAND \
-            EVP_KDF_HKDF_MODE_EXTRACT_AND_EXPAND
-# define EVP_PKEY_HKDEF_MODE_EXTRACT_ONLY       \
-            EVP_KDF_HKDF_MODE_EXTRACT_ONLY
-# define EVP_PKEY_HKDEF_MODE_EXPAND_ONLY        \
-            EVP_KDF_HKDF_MODE_EXPAND_ONLY
-
-int EVP_PKEY_CTX_set_tls1_prf_md(EVP_PKEY_CTX *ctx, const EVP_MD *md);
-
-int EVP_PKEY_CTX_set1_tls1_prf_secret(EVP_PKEY_CTX *pctx,
-                                      const unsigned char *sec, int seclen);
-
-int EVP_PKEY_CTX_add1_tls1_prf_seed(EVP_PKEY_CTX *pctx,
-                                    const unsigned char *seed, int seedlen);
-
-int EVP_PKEY_CTX_set_hkdf_md(EVP_PKEY_CTX *ctx, const EVP_MD *md);
-
-int EVP_PKEY_CTX_set1_hkdf_salt(EVP_PKEY_CTX *ctx,
-                                const unsigned char *salt, int saltlen);
-
-int EVP_PKEY_CTX_set1_hkdf_key(EVP_PKEY_CTX *ctx,
-                               const unsigned char *key, int keylen);
-
-int EVP_PKEY_CTX_add1_hkdf_info(EVP_PKEY_CTX *ctx,
-                                const unsigned char *info, int infolen);
-
-int EVP_PKEY_CTX_set_hkdf_mode(EVP_PKEY_CTX *ctx, int mode);
-# define EVP_PKEY_CTX_hkdf_mode EVP_PKEY_CTX_set_hkdf_mode
-
-int EVP_PKEY_CTX_set1_pbe_pass(EVP_PKEY_CTX *ctx, const char *pass,
-                               int passlen);
-
-int EVP_PKEY_CTX_set1_scrypt_salt(EVP_PKEY_CTX *ctx,
-                                  const unsigned char *salt, int saltlen);
-
-int EVP_PKEY_CTX_set_scrypt_N(EVP_PKEY_CTX *ctx, uint64_t n);
-
-int EVP_PKEY_CTX_set_scrypt_r(EVP_PKEY_CTX *ctx, uint64_t r);
-
-int EVP_PKEY_CTX_set_scrypt_p(EVP_PKEY_CTX *ctx, uint64_t p);
-
-int EVP_PKEY_CTX_set_scrypt_maxmem_bytes(EVP_PKEY_CTX *ctx,
-                                         uint64_t maxmem_bytes);
-
-
-# ifdef __cplusplus
-}
-# endif
 #endif
+
+
+// KDF support for EVP.
+
+
+// HKDF-specific functions.
+//
+// The following functions are provided for OpenSSL compatibility. Prefer the
+// HKDF functions in <openssl/hkdf.h>. In each, |ctx| must be created with
+// |EVP_PKEY_CTX_new_id| with |EVP_PKEY_HKDF| and then initialized with
+// |EVP_PKEY_derive_init|.
+
+// EVP_PKEY_HKDEF_MODE_* define "modes" for use with |EVP_PKEY_CTX_hkdf_mode|.
+// The mispelling of "HKDF" as "HKDEF" is intentional for OpenSSL compatibility.
+#define EVP_PKEY_HKDEF_MODE_EXTRACT_AND_EXPAND 0
+#define EVP_PKEY_HKDEF_MODE_EXTRACT_ONLY 1
+#define EVP_PKEY_HKDEF_MODE_EXPAND_ONLY 2
+
+// EVP_PKEY_CTX_hkdf_mode configures which HKDF operation to run. It returns one
+// on success and zero on error. |mode| must be one of |EVP_PKEY_HKDEF_MODE_*|.
+// By default, the mode is |EVP_PKEY_HKDEF_MODE_EXTRACT_AND_EXPAND|.
+//
+// If |mode| is |EVP_PKEY_HKDEF_MODE_EXTRACT_AND_EXPAND| or
+// |EVP_PKEY_HKDEF_MODE_EXPAND_ONLY|, the output is variable-length.
+// |EVP_PKEY_derive| uses the size of the output buffer as the output length for
+// HKDF-Expand.
+//
+// WARNING: Although this API calls it a "mode", HKDF-Extract and HKDF-Expand
+// are distinct operations with distinct inputs and distinct kinds of keys.
+// Callers should not pass input secrets for one operation into the other.
+OPENSSL_EXPORT int EVP_PKEY_CTX_hkdf_mode(EVP_PKEY_CTX *ctx, int mode);
+
+// EVP_PKEY_CTX_set_hkdf_md sets |md| as the digest to use with HKDF. It returns
+// one on success and zero on error.
+OPENSSL_EXPORT int EVP_PKEY_CTX_set_hkdf_md(EVP_PKEY_CTX *ctx,
+                                            const EVP_MD *md);
+
+// EVP_PKEY_CTX_set1_hkdf_key configures HKDF to use |key_len| bytes from |key|
+// as the "key", described below. It returns one on success and zero on error.
+//
+// Which input is the key depends on the "mode" (see |EVP_PKEY_CTX_hkdf_mode|).
+// If |EVP_PKEY_HKDEF_MODE_EXTRACT_AND_EXPAND| or
+// |EVP_PKEY_HKDEF_MODE_EXTRACT_ONLY|, this function specifies the input keying
+// material (IKM) for HKDF-Extract. If |EVP_PKEY_HKDEF_MODE_EXPAND_ONLY|, it
+// instead specifies the pseudorandom key (PRK) for HKDF-Expand.
+OPENSSL_EXPORT int EVP_PKEY_CTX_set1_hkdf_key(EVP_PKEY_CTX *ctx,
+                                              const uint8_t *key,
+                                              size_t key_len);
+
+// EVP_PKEY_CTX_set1_hkdf_salt configures HKDF to use |salt_len| bytes from
+// |salt| as the salt parameter to HKDF-Extract. It returns one on success and
+// zero on error. If performing HKDF-Expand only, this parameter is ignored.
+OPENSSL_EXPORT int EVP_PKEY_CTX_set1_hkdf_salt(EVP_PKEY_CTX *ctx,
+                                               const uint8_t *salt,
+                                               size_t salt_len);
+
+// EVP_PKEY_CTX_add1_hkdf_info appends |info_len| bytes from |info| to the info
+// parameter used with HKDF-Expand. It returns one on success and zero on error.
+// If performing HKDF-Extract only, this parameter is ignored.
+OPENSSL_EXPORT int EVP_PKEY_CTX_add1_hkdf_info(EVP_PKEY_CTX *ctx,
+                                               const uint8_t *info,
+                                               size_t info_len);
+
+
+#if defined(__cplusplus)
+}  // extern C
+#endif
+
+#endif  // OPENSSL_HEADER_KDF_H
