@@ -1,0 +1,3 @@
+/* GNU ld script */
+OUTPUT_FORMAT(elf64-x86-64)
+GROUP ( liblzma.so.5.8.1 AS_NEEDED ( libpthread.so.0 libc.so.6 ) )

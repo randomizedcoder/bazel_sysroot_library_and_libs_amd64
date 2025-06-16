@@ -5,56 +5,65 @@
 { pkgs ? import <nixpkgs> {} }:
 
 let
-  #llvm = pkgs.llvmPackages_20;
+  llvm = pkgs.llvmPackages_20;
 
   commonLibs = with pkgs; [
     # Core C system libraries (glibc is standard on Linux, Clang uses it)
     glibc glibc.dev glibc.static
 
     # GCC runtime libraries, C++ Standard Library, and C++ headers
-    gcc                  # Provides libgcc_s.so (from gcc.lib), and the gcc compiler itself
-    gcc.cc               # Provides the g++ compiler toolchain
-    gcc.cc.lib           # Provides libstdc++.so, libsupc++.a (GCC's C++ standard library)
-    libgcc               # Provides C++ headers for libstdc++ (e.g. <vector>)
+    gcc                  # Provides gcc/g++ compilers, libgcc_s.so.1, and also libstdc++.so.*, libstdc++.a, libsupc++.a from its /lib subdir
+    libgcc libgcc.lib
+    gcc-unwrapped gcc-unwrapped.lib gcc-unwrapped.libgcc
+    stdenv.cc            # Its 'include/' dir should provide C/C++ headers for the standard compiler (GCC in this case)
+    # consider https://search.nixos.org/packages?channel=unstable&show=fastStdenv&from=0&size=50&sort=relevance&type=packages&query=fastStdenv
 
-    # # LLVM C++ Standard Library, compiler runtime, and unwind library
-    # llvm.libcxx          # Provides libc++.so, libc++.a (libraries)
-    # llvm.libcxx.dev      # Provides C++ headers
-    # llvm.compiler-rt     # Provides libclang_rt.builtins*.a
-    # llvm.compiler-rt.dev # Provides libclang_rt headers
-    # llvm.libunwind       # Provides libunwind for exception handling
-    # llvm.libunwind.dev   # Provides libunwind headers
+    # LLVM C++ Standard Library, compiler runtime, and unwind library
+    llvm.stdenv
+    llvm.libcxxStdenv
+    llvm.libcxxClang
+    llvm.libcxx          # Provides libc++.so, libc++.a (libraries)
+    llvm.libcxx.dev      # Provides C++ headers
+    llvm.libc-full
+    llvm.compiler-rt     # Provides libclang_rt.builtins*.a
+    llvm.compiler-rt.dev # Provides libclang_rt headers
+    llvm.libunwind       # Provides libunwind for exception handling
+    llvm.libunwind.dev   # Provides libunwind headers
+
+    libclang libclang.dev libclang.lib
+    libuuid libuuid.dev libuuid.out
 
     # Compression libraries (compiler-agnostic)
     zlib zlib.dev zlib.static
-    bzip2 bzip2.dev
-    xz xz.dev
-    zstd zstd.dev
+    bzip2 bzip2.dev bzip2.out
+    xz xz.dev xz.out
+    zstd zstd.dev zstd.out
 
     # XML and parsing (compiler-agnostic)
-    libxml2 libxml2.dev libxml2.out
-    expat expat.dev expat.out
+    libxml2 libxml2.dev libxml2.out  # .out for .so.*
+    expat expat.dev expat.out          # .out for .so.*
 
     # Networking (compiler-agnostic)
-    openssl openssl.dev openssl.out
-    curl curl.dev curl.out
+    openssl openssl.dev openssl.out  # .out for .so.*
+    boringssl boringssl.dev boringssl.out  # .out for .so.*
+    curl curl.dev curl.out              # .out for .so.*
 
     # Text processing (compiler-agnostic)
-    pcre pcre.dev pcre.out
-    pcre2 pcre2.dev pcre2.out
+    pcre pcre.dev pcre.out              # .out for .so.*
+    pcre2 pcre2.dev pcre2.out          # .out for .so.*
 
     # JSON (compiler-agnostic)
-    jansson jansson.dev jansson.out
+    jansson jansson.dev jansson.out  # .out for .so.*
 
     # Database (compiler-agnostic)
-    sqlite sqlite.dev sqlite.out
+    sqlite sqlite.dev sqlite.out      # .out for .so.*
 
     # Image processing (compiler-agnostic)
-    libpng libpng.dev libpng.out
-    libjpeg libjpeg.dev libjpeg.out
+    libpng libpng.dev libpng.out      # .out for .so.*
+    libjpeg libjpeg.dev libjpeg.out  # .out for .so.* (libjpeg or libjpeg_turbo)
 
     # System utilities
-    util-linux util-linux.dev util-linux.out
+    util-linux util-linux.dev util-linux.out # Provides libuuid, libblkid, libmount
   ];
 
   # Helper function to create a linker script

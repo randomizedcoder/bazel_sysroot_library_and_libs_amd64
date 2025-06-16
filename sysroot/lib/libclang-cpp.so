@@ -1,0 +1,3 @@
+/* GNU ld script */
+OUTPUT_FORMAT(elf64-x86-64)
+GROUP ( libclang-cpp.so.19.1 AS_NEEDED ( libstdc++.so.6 libm.so.6 libgcc_s.so.1 libc.so.6 ld-linux-x86-64.so.2 ) )

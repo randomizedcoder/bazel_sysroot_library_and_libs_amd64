@@ -1,139 +1,281 @@
-/*
- * Copyright 1995-2023 The OpenSSL Project Authors. All Rights Reserved.
+/* Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
+ * All rights reserved.
  *
- * Licensed under the Apache License 2.0 (the "License").  You may not use
- * this file except in compliance with the License.  You can obtain a copy
- * in the file LICENSE in the source distribution or at
- * https://www.openssl.org/source/license.html
- */
+ * This package is an SSL implementation written
+ * by Eric Young (eay@cryptsoft.com).
+ * The implementation was written so as to conform with Netscapes SSL.
+ *
+ * This library is free for commercial and non-commercial use as long as
+ * the following conditions are aheared to.  The following conditions
+ * apply to all code found in this distribution, be it the RC4, RSA,
+ * lhash, DES, etc., code; not just the SSL code.  The SSL documentation
+ * included with this distribution is covered by the same copyright terms
+ * except that the holder is Tim Hudson (tjh@cryptsoft.com).
+ *
+ * Copyright remains Eric Young's, and as such any Copyright notices in
+ * the code are not to be removed.
+ * If this package is used in a product, Eric Young should be given attribution
+ * as the author of the parts of the library used.
+ * This can be in the form of a textual message at program startup or
+ * in documentation (online or textual) provided with the package.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    "This product includes cryptographic software written by
+ *     Eric Young (eay@cryptsoft.com)"
+ *    The word 'cryptographic' can be left out if the rouines from the library
+ *    being used are not cryptographic related :-).
+ * 4. If you include any Windows specific code (or a derivative thereof) from
+ *    the apps directory (application code) you must include an acknowledgement:
+ *    "This product includes software written by Tim Hudson (tjh@cryptsoft.com)"
+ *
+ * THIS SOFTWARE IS PROVIDED BY ERIC YOUNG ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ * The licence and distribution terms for any publically available version or
+ * derivative of this code cannot be changed.  i.e. this code cannot simply be
+ * copied and put under another distribution licence
+ * [including the GNU Public Licence.] */
 
-#ifndef OPENSSL_SHA_H
-# define OPENSSL_SHA_H
-# pragma once
+#ifndef OPENSSL_HEADER_SHA_H
+#define OPENSSL_HEADER_SHA_H
 
-# include <openssl/macros.h>
-# ifndef OPENSSL_NO_DEPRECATED_3_0
-#  define HEADER_SHA_H
-# endif
+#include <openssl/base.h>
+#include <openssl/bcm_public.h> // IWYU pragma: export
 
-# include <openssl/e_os2.h>
-# include <stddef.h>
-
-# ifdef  __cplusplus
+#if defined(__cplusplus)
 extern "C" {
-# endif
-
-# define SHA_DIGEST_LENGTH 20
-
-# ifndef OPENSSL_NO_DEPRECATED_3_0
-/*-
- * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- * ! SHA_LONG has to be at least 32 bits wide.                    !
- * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- */
-#  define SHA_LONG unsigned int
-
-#  define SHA_LBLOCK      16
-#  define SHA_CBLOCK      (SHA_LBLOCK*4)/* SHA treats input data as a
-                                         * contiguous array of 32 bit wide
-                                         * big-endian values. */
-#  define SHA_LAST_BLOCK  (SHA_CBLOCK-8)
-
-typedef struct SHAstate_st {
-    SHA_LONG h0, h1, h2, h3, h4;
-    SHA_LONG Nl, Nh;
-    SHA_LONG data[SHA_LBLOCK];
-    unsigned int num;
-} SHA_CTX;
-
-OSSL_DEPRECATEDIN_3_0 int SHA1_Init(SHA_CTX *c);
-OSSL_DEPRECATEDIN_3_0 int SHA1_Update(SHA_CTX *c, const void *data, size_t len);
-OSSL_DEPRECATEDIN_3_0 int SHA1_Final(unsigned char *md, SHA_CTX *c);
-OSSL_DEPRECATEDIN_3_0 void SHA1_Transform(SHA_CTX *c, const unsigned char *data);
-# endif
-
-unsigned char *SHA1(const unsigned char *d, size_t n, unsigned char *md);
-
-# ifndef OPENSSL_NO_DEPRECATED_3_0
-#  define SHA256_CBLOCK   (SHA_LBLOCK*4)/* SHA-256 treats input data as a
-                                        * contiguous array of 32 bit wide
-                                        * big-endian values. */
-
-typedef struct SHA256state_st {
-    SHA_LONG h[8];
-    SHA_LONG Nl, Nh;
-    SHA_LONG data[SHA_LBLOCK];
-    unsigned int num, md_len;
-} SHA256_CTX;
-
-OSSL_DEPRECATEDIN_3_0 int SHA224_Init(SHA256_CTX *c);
-OSSL_DEPRECATEDIN_3_0 int SHA224_Update(SHA256_CTX *c,
-                                        const void *data, size_t len);
-OSSL_DEPRECATEDIN_3_0 int SHA224_Final(unsigned char *md, SHA256_CTX *c);
-OSSL_DEPRECATEDIN_3_0 int SHA256_Init(SHA256_CTX *c);
-OSSL_DEPRECATEDIN_3_0 int SHA256_Update(SHA256_CTX *c,
-                                        const void *data, size_t len);
-OSSL_DEPRECATEDIN_3_0 int SHA256_Final(unsigned char *md, SHA256_CTX *c);
-OSSL_DEPRECATEDIN_3_0 void SHA256_Transform(SHA256_CTX *c,
-                                            const unsigned char *data);
-# endif
-
-unsigned char *SHA224(const unsigned char *d, size_t n, unsigned char *md);
-unsigned char *SHA256(const unsigned char *d, size_t n, unsigned char *md);
-
-# define SHA256_192_DIGEST_LENGTH 24
-# define SHA224_DIGEST_LENGTH    28
-# define SHA256_DIGEST_LENGTH    32
-# define SHA384_DIGEST_LENGTH    48
-# define SHA512_DIGEST_LENGTH    64
-
-# ifndef OPENSSL_NO_DEPRECATED_3_0
-/*
- * Unlike 32-bit digest algorithms, SHA-512 *relies* on SHA_LONG64
- * being exactly 64-bit wide. See Implementation Notes in sha512.c
- * for further details.
- */
-/*
- * SHA-512 treats input data as a
- * contiguous array of 64 bit
- * wide big-endian values.
- */
-#  define SHA512_CBLOCK   (SHA_LBLOCK*8)
-#  if (defined(_WIN32) || defined(_WIN64)) && !defined(__MINGW32__)
-#   define SHA_LONG64 unsigned __int64
-#  elif defined(__arch64__)
-#   define SHA_LONG64 unsigned long
-#  else
-#   define SHA_LONG64 unsigned long long
-#  endif
-
-typedef struct SHA512state_st {
-    SHA_LONG64 h[8];
-    SHA_LONG64 Nl, Nh;
-    union {
-        SHA_LONG64 d[SHA_LBLOCK];
-        unsigned char p[SHA512_CBLOCK];
-    } u;
-    unsigned int num, md_len;
-} SHA512_CTX;
-
-OSSL_DEPRECATEDIN_3_0 int SHA384_Init(SHA512_CTX *c);
-OSSL_DEPRECATEDIN_3_0 int SHA384_Update(SHA512_CTX *c,
-                                        const void *data, size_t len);
-OSSL_DEPRECATEDIN_3_0 int SHA384_Final(unsigned char *md, SHA512_CTX *c);
-OSSL_DEPRECATEDIN_3_0 int SHA512_Init(SHA512_CTX *c);
-OSSL_DEPRECATEDIN_3_0 int SHA512_Update(SHA512_CTX *c,
-                                        const void *data, size_t len);
-OSSL_DEPRECATEDIN_3_0 int SHA512_Final(unsigned char *md, SHA512_CTX *c);
-OSSL_DEPRECATEDIN_3_0 void SHA512_Transform(SHA512_CTX *c,
-                                            const unsigned char *data);
-# endif
-
-unsigned char *SHA384(const unsigned char *d, size_t n, unsigned char *md);
-unsigned char *SHA512(const unsigned char *d, size_t n, unsigned char *md);
-
-# ifdef  __cplusplus
-}
-# endif
-
 #endif
+
+
+// The SHA family of hash functions (SHA-1 and SHA-2).
+
+
+// SHA_CBLOCK is the block size of SHA-1.
+#define SHA_CBLOCK 64
+
+// SHA_DIGEST_LENGTH is the length of a SHA-1 digest.
+#define SHA_DIGEST_LENGTH 20
+
+// SHA1_Init initialises |sha| and returns one.
+OPENSSL_EXPORT int SHA1_Init(SHA_CTX *sha);
+
+// SHA1_Update adds |len| bytes from |data| to |sha| and returns one.
+OPENSSL_EXPORT int SHA1_Update(SHA_CTX *sha, const void *data, size_t len);
+
+// SHA1_Final adds the final padding to |sha| and writes the resulting digest to
+// |out|, which must have at least |SHA_DIGEST_LENGTH| bytes of space. It
+// returns one.
+OPENSSL_EXPORT int SHA1_Final(uint8_t out[SHA_DIGEST_LENGTH], SHA_CTX *sha);
+
+// SHA1 writes the digest of |len| bytes from |data| to |out| and returns
+// |out|. There must be at least |SHA_DIGEST_LENGTH| bytes of space in
+// |out|.
+OPENSSL_EXPORT uint8_t *SHA1(const uint8_t *data, size_t len,
+                             uint8_t out[SHA_DIGEST_LENGTH]);
+
+// SHA1_Transform is a low-level function that performs a single, SHA-1 block
+// transformation using the state from |sha| and |SHA_CBLOCK| bytes from
+// |block|.
+OPENSSL_EXPORT void SHA1_Transform(SHA_CTX *sha,
+                                   const uint8_t block[SHA_CBLOCK]);
+
+// CRYPTO_fips_186_2_prf derives |out_len| bytes from |xkey| using the PRF
+// defined in FIPS 186-2, Appendix 3.1, with change notice 1 applied. The b
+// parameter is 160 and seed, XKEY, is also 160 bits. The optional XSEED user
+// input is all zeros.
+//
+// The PRF generates a sequence of 320-bit numbers. Each number is encoded as a
+// 40-byte string in big-endian and then concatenated to form |out|. If
+// |out_len| is not a multiple of 40, the result is truncated. This matches the
+// construction used in Section 7 of RFC 4186 and Section 7 of RFC 4187.
+//
+// This PRF is based on SHA-1, a weak hash function, and should not be used
+// in new protocols. It is provided for compatibility with some legacy EAP
+// methods.
+OPENSSL_EXPORT void CRYPTO_fips_186_2_prf(
+    uint8_t *out, size_t out_len, const uint8_t xkey[SHA_DIGEST_LENGTH]);
+
+
+// SHA-224.
+
+// SHA224_CBLOCK is the block size of SHA-224.
+#define SHA224_CBLOCK 64
+
+// SHA224_DIGEST_LENGTH is the length of a SHA-224 digest.
+#define SHA224_DIGEST_LENGTH 28
+
+// SHA224_Init initialises |sha| and returns 1.
+OPENSSL_EXPORT int SHA224_Init(SHA256_CTX *sha);
+
+// SHA224_Update adds |len| bytes from |data| to |sha| and returns 1.
+OPENSSL_EXPORT int SHA224_Update(SHA256_CTX *sha, const void *data, size_t len);
+
+// SHA224_Final adds the final padding to |sha| and writes the resulting digest
+// to |out|, which must have at least |SHA224_DIGEST_LENGTH| bytes of space. It
+// returns 1.
+OPENSSL_EXPORT int SHA224_Final(uint8_t out[SHA224_DIGEST_LENGTH],
+                                SHA256_CTX *sha);
+
+// SHA224 writes the digest of |len| bytes from |data| to |out| and returns
+// |out|. There must be at least |SHA224_DIGEST_LENGTH| bytes of space in
+// |out|.
+OPENSSL_EXPORT uint8_t *SHA224(const uint8_t *data, size_t len,
+                               uint8_t out[SHA224_DIGEST_LENGTH]);
+
+
+// SHA-256.
+
+// SHA256_CBLOCK is the block size of SHA-256.
+#define SHA256_CBLOCK 64
+
+// SHA256_DIGEST_LENGTH is the length of a SHA-256 digest.
+#define SHA256_DIGEST_LENGTH 32
+
+// SHA256_Init initialises |sha| and returns 1.
+OPENSSL_EXPORT int SHA256_Init(SHA256_CTX *sha);
+
+// SHA256_Update adds |len| bytes from |data| to |sha| and returns 1.
+OPENSSL_EXPORT int SHA256_Update(SHA256_CTX *sha, const void *data, size_t len);
+
+// SHA256_Final adds the final padding to |sha| and writes the resulting digest
+// to |out|, which must have at least |SHA256_DIGEST_LENGTH| bytes of space. It
+// returns one on success and zero on programmer error.
+OPENSSL_EXPORT int SHA256_Final(uint8_t out[SHA256_DIGEST_LENGTH],
+                                SHA256_CTX *sha);
+
+// SHA256 writes the digest of |len| bytes from |data| to |out| and returns
+// |out|. There must be at least |SHA256_DIGEST_LENGTH| bytes of space in
+// |out|.
+OPENSSL_EXPORT uint8_t *SHA256(const uint8_t *data, size_t len,
+                               uint8_t out[SHA256_DIGEST_LENGTH]);
+
+// SHA256_Transform is a low-level function that performs a single, SHA-256
+// block transformation using the state from |sha| and |SHA256_CBLOCK| bytes
+// from |block|.
+OPENSSL_EXPORT void SHA256_Transform(SHA256_CTX *sha,
+                                     const uint8_t block[SHA256_CBLOCK]);
+
+// SHA256_TransformBlocks is a low-level function that takes |num_blocks| *
+// |SHA256_CBLOCK| bytes of data and performs SHA-256 transforms on it to update
+// |state|. You should not use this function unless you are implementing a
+// derivative of SHA-256.
+OPENSSL_EXPORT void SHA256_TransformBlocks(uint32_t state[8],
+                                           const uint8_t *data,
+                                           size_t num_blocks);
+
+// SHA-384.
+
+// SHA384_CBLOCK is the block size of SHA-384.
+#define SHA384_CBLOCK 128
+
+// SHA384_DIGEST_LENGTH is the length of a SHA-384 digest.
+#define SHA384_DIGEST_LENGTH 48
+
+// SHA384_Init initialises |sha| and returns 1.
+OPENSSL_EXPORT int SHA384_Init(SHA512_CTX *sha);
+
+// SHA384_Update adds |len| bytes from |data| to |sha| and returns 1.
+OPENSSL_EXPORT int SHA384_Update(SHA512_CTX *sha, const void *data, size_t len);
+
+// SHA384_Final adds the final padding to |sha| and writes the resulting digest
+// to |out|, which must have at least |SHA384_DIGEST_LENGTH| bytes of space. It
+// returns one on success and zero on programmer error.
+OPENSSL_EXPORT int SHA384_Final(uint8_t out[SHA384_DIGEST_LENGTH],
+                                SHA512_CTX *sha);
+
+// SHA384 writes the digest of |len| bytes from |data| to |out| and returns
+// |out|. There must be at least |SHA384_DIGEST_LENGTH| bytes of space in
+// |out|.
+OPENSSL_EXPORT uint8_t *SHA384(const uint8_t *data, size_t len,
+                               uint8_t out[SHA384_DIGEST_LENGTH]);
+
+
+// SHA-512.
+
+// SHA512_CBLOCK is the block size of SHA-512.
+#define SHA512_CBLOCK 128
+
+// SHA512_DIGEST_LENGTH is the length of a SHA-512 digest.
+#define SHA512_DIGEST_LENGTH 64
+
+// SHA512_Init initialises |sha| and returns 1.
+OPENSSL_EXPORT int SHA512_Init(SHA512_CTX *sha);
+
+// SHA512_Update adds |len| bytes from |data| to |sha| and returns 1.
+OPENSSL_EXPORT int SHA512_Update(SHA512_CTX *sha, const void *data, size_t len);
+
+// SHA512_Final adds the final padding to |sha| and writes the resulting digest
+// to |out|, which must have at least |SHA512_DIGEST_LENGTH| bytes of space. It
+// returns one on success and zero on programmer error.
+OPENSSL_EXPORT int SHA512_Final(uint8_t out[SHA512_DIGEST_LENGTH],
+                                SHA512_CTX *sha);
+
+// SHA512 writes the digest of |len| bytes from |data| to |out| and returns
+// |out|. There must be at least |SHA512_DIGEST_LENGTH| bytes of space in
+// |out|.
+OPENSSL_EXPORT uint8_t *SHA512(const uint8_t *data, size_t len,
+                               uint8_t out[SHA512_DIGEST_LENGTH]);
+
+// SHA512_Transform is a low-level function that performs a single, SHA-512
+// block transformation using the state from |sha| and |SHA512_CBLOCK| bytes
+// from |block|.
+OPENSSL_EXPORT void SHA512_Transform(SHA512_CTX *sha,
+                                     const uint8_t block[SHA512_CBLOCK]);
+
+struct sha512_state_st {
+  uint64_t h[8];
+  uint64_t Nl, Nh;
+  uint8_t p[128];
+  unsigned num, md_len;
+};
+
+
+// SHA-512-256
+//
+// See https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf section 5.3.6
+
+#define SHA512_256_DIGEST_LENGTH 32
+
+// SHA512_256_Init initialises |sha| and returns 1.
+OPENSSL_EXPORT int SHA512_256_Init(SHA512_CTX *sha);
+
+// SHA512_256_Update adds |len| bytes from |data| to |sha| and returns 1.
+OPENSSL_EXPORT int SHA512_256_Update(SHA512_CTX *sha, const void *data,
+                                     size_t len);
+
+// SHA512_256_Final adds the final padding to |sha| and writes the resulting
+// digest to |out|, which must have at least |SHA512_256_DIGEST_LENGTH| bytes of
+// space. It returns one on success and zero on programmer error.
+OPENSSL_EXPORT int SHA512_256_Final(uint8_t out[SHA512_256_DIGEST_LENGTH],
+                                    SHA512_CTX *sha);
+
+// SHA512_256 writes the digest of |len| bytes from |data| to |out| and returns
+// |out|. There must be at least |SHA512_256_DIGEST_LENGTH| bytes of space in
+// |out|.
+OPENSSL_EXPORT uint8_t *SHA512_256(const uint8_t *data, size_t len,
+                                   uint8_t out[SHA512_256_DIGEST_LENGTH]);
+
+
+#if defined(__cplusplus)
+}  // extern C
+#endif
+
+#endif  // OPENSSL_HEADER_SHA_H
