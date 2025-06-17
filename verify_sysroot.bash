@@ -166,6 +166,7 @@ add_component "Curl" "curl/curl.h" "libcurl.so.*"
 # 7. Text processing libraries
 add_component "PCRE" "pcre.h" "libpcre.so.*"
 add_component "PCRE2" "pcre2.h" "libpcre2-8.so.*" # Common is -8 (8-bit)
+add_component "RE2" "re2/re2.h" "libre2.so.*"
 
 # 8. JSON library (jansson)
 add_component "Jansson" "jansson.h" "libjansson.so.*"

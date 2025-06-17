@@ -375,6 +375,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libre2",
+  shared_library = "lib/libre2.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.fuzzer-x86_64",
   static_library = "lib/linux/libclang_rt.fuzzer-x86_64.a",
   visibility = ["//visibility:public"],
