@@ -23,6 +23,7 @@
 ./sysroot/lib/libclangDaemon.a
 ./sysroot/lib/libpthread.so.0
 ./sysroot/lib/libjansson.so
+./sysroot/lib/libre2.so.11.0.0
 ./sysroot/lib/libc++.so
 ./sysroot/lib/libssp_nonshared.a
 ./sysroot/lib/libmvec.a
@@ -1205,6 +1206,7 @@
 ./sysroot/lib/libnss_hesiod.so.2
 ./sysroot/lib/libtsan.so.2.0.0
 ./sysroot/lib/libclangdSupport.a
+./sysroot/lib/libre2.so.11
 ./sysroot/lib/libclangTidyDarwinModule.a
 ./sysroot/lib/libpthread.a
 ./sysroot/lib/libpcre2-16.so.0
@@ -1334,6 +1336,7 @@
 ./sysroot/lib/libpng16.so.16.46.0
 ./sysroot/lib/libpcre2-16.so.0.13.0
 ./sysroot/lib/libpcre.so.1
+./sysroot/lib/libre2.so
 ./sysroot/lib/libz.a
 ./sysroot/lib/libubsan.so
 ./sysroot/lib/libunwind.so.1
@@ -6663,6 +6666,11 @@
 ./sysroot/include/netrom
 ./sysroot/include/netrom/netrom.h
 ./sysroot/include/envz.h
+./sysroot/include/re2
+./sysroot/include/re2/filtered_re2.h
+./sysroot/include/re2/set.h
+./sysroot/include/re2/stringpiece.h
+./sysroot/include/re2/re2.h
 ./sysroot/include/aliases.h
 ./sysroot/include/termios.h
 ./sysroot/include/fnmatch.h

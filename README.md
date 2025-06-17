@@ -26,7 +26,9 @@ copts = [
 The sysroot includes:
 
 - GCC runtime libraries and its C++ Standard Library (libstdc++)
-- Text processing libraries (pcre, pcre2)
+- Text processing libraries (pcre, pcre2, re2)
+- Compression libraries (zlib, bzip2, xz, zstd)
+- XML and parsing libraries (libxml2, expat)
 - JSON library (jansson)
 - Database library (sqlite)
 - Image processing libraries (libpng, libjpeg)
@@ -177,7 +179,7 @@ The sysroot includes:
 - Compression libraries (zlib, bzip2, xz, zstd)
 - XML and parsing libraries (libxml2, expat)
 - Networking libraries (openssl, curl)
-- Text processing libraries (pcre, pcre2)
+- Text processing libraries (pcre, pcre2, re2)
 - JSON libraries (jansson)
 - Database libraries (sqlite)
 - Image processing libraries (libpng, libjpeg)

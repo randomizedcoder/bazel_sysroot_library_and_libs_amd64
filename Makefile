@@ -24,6 +24,9 @@ update-flake:
 build:
 	nix build
 
+# disable remote build
+#nix build --option builders ""
+
 build_debug:
 	nix -L -vv build
 #nix --max-jobs 100 -vvv build

@@ -8,6 +8,7 @@ let
   llvm = pkgs.llvmPackages_20;
 
   commonLibs = with pkgs; [
+
     # Core C system libraries (glibc is standard on Linux, Clang uses it)
     glibc glibc.dev glibc.static
 
@@ -40,43 +41,32 @@ let
     zstd zstd.dev zstd.out
 
     # XML and parsing (compiler-agnostic)
-    libxml2 libxml2.dev libxml2.out  # .out for .so.*
-    expat expat.dev expat.out          # .out for .so.*
+    libxml2 libxml2.dev libxml2.out        # .out for .so.*
+    expat expat.dev expat.out
 
     # Networking (compiler-agnostic)
-    openssl openssl.dev openssl.out  # .out for .so.*
-    boringssl boringssl.dev boringssl.out  # .out for .so.*
-    curl curl.dev curl.out              # .out for .so.*
+    openssl openssl.dev openssl.out
+    boringssl boringssl.dev boringssl.out
+    curl curl.dev curl.out
 
     # Text processing (compiler-agnostic)
-    pcre pcre.dev pcre.out              # .out for .so.*
-    pcre2 pcre2.dev pcre2.out          # .out for .so.*
+    pcre pcre.dev pcre.out
+    pcre2 pcre2.dev pcre2.out
+    re2 re2.dev re2.out
 
     # JSON (compiler-agnostic)
-    jansson jansson.dev jansson.out  # .out for .so.*
+    jansson jansson.dev jansson.out
 
     # Database (compiler-agnostic)
-    sqlite sqlite.dev sqlite.out      # .out for .so.*
+    sqlite sqlite.dev sqlite.out
 
     # Image processing (compiler-agnostic)
-    libpng libpng.dev libpng.out      # .out for .so.*
-    libjpeg libjpeg.dev libjpeg.out  # .out for .so.* (libjpeg or libjpeg_turbo)
+    libpng libpng.dev libpng.out
+    libjpeg libjpeg.dev libjpeg.out
 
     # System utilities
     util-linux util-linux.dev util-linux.out # Provides libuuid, libblkid, libmount
   ];
-
-  # Helper function to create a linker script
-  createLinkerScript = name: version: asNeeded: ''
-    echo "Creating linker script for $name.so pointing to $name.$version"
-    echo "/* GNU ld script */" > "$out/sysroot/lib/$name.so"
-    echo "OUTPUT_FORMAT(elf64-x86-64)" >> "$out/sysroot/lib/$name.so"
-    if [ -n "${asNeeded}" ]; then
-      echo "GROUP ( $name.$version AS_NEEDED ( ${asNeeded} ) )" >> "$out/sysroot/lib/$name.so"
-    else
-      echo "GROUP ( $name.$version )" >> "$out/sysroot/lib/$name.so"
-    fi
-  '';
 
 in
 pkgs.stdenv.mkDerivation {
@@ -89,6 +79,9 @@ pkgs.stdenv.mkDerivation {
   nativeBuildInputs = [ pkgs.rsync pkgs.patchelf pkgs.binutils ]; # Add binutils for readelf
   buildInputs = commonLibs; # Makes commonLibs' paths available
 
+  # Pass commonLibs paths as an environment variable to the buildCommand
+  commonLibsPaths = pkgs.lib.concatStringsSep " " (map (pkg: "${pkg}") commonLibs);
+
   buildCommand = ''
     # Exit immediately on error, print commands, fail on unset variables, fail on pipe errors
     set -euxo pipefail
@@ -98,21 +91,21 @@ pkgs.stdenv.mkDerivation {
 
     echo "Copying files from commonLibs to sysroot..."
 
-    ${pkgs.lib.concatMapStringsSep "\n" (pkg: ''
-      if [ -d "${pkg}/include" ]; then # Check if the package has an include directory
-        echo "Copying include files from (generic) ${pkg} to $out/sysroot/include/"
+    for pkg_path in $commonLibsPaths; do
+      if [ -d "$pkg_path/include" ]; then # Check if the package has an include directory
+        echo "Copying include files from (generic) $pkg_path to $out/sysroot/include/"
         # rsync -rL is like cp -RL (recursive, dereference symlinks)
         # --no-perms, --no-owner, --no-group aim to mimic cp --no-preserve=mode,ownership.
         rsync --recursive --copy-links --no-perms --no-owner --no-group \
           --verbose \
           --prune-empty-dirs \
-          "${pkg}/include/" "$out/sysroot/include/" || true
+          "$pkg_path/include/" "$out/sysroot/include/" || true
       else
-        echo "Info: Package ${pkg} does not have an /include directory, skipping include copy."
+        echo "Info: Package $pkg_path does not have an /include directory, skipping include copy."
       fi
 
-      if [ -d "${pkg}/lib" ]; then
-        echo "Copying lib files from ${pkg} to $out/sysroot/lib/ (excluding .pc, .la, pkgconfig/, cmake/, and .so files)"
+      if [ -d "$pkg_path/lib" ]; then
+        echo "Copying lib files from $pkg_path to $out/sysroot/lib/ (excluding .pc, .la, pkgconfig/, cmake/, and .so files)"
         # Explicitly using --recursive --copy-links and --no-perms, --no-owner, --no-group.
         # Exclude .so files (linker scripts) but keep .so.X.Y.Z files (actual shared libraries)
         # Exclude gcc's libstdc++ and libsupc++
@@ -122,11 +115,11 @@ pkgs.stdenv.mkDerivation {
           --exclude='pkgconfig/' \
           --exclude='cmake/' \
           --exclude='*.so' \
-          "${pkg}/lib/" "$out/sysroot/lib/" || true
+          "$pkg_path/lib/" "$out/sysroot/lib/" || true
       else
-        echo "Info: Package ${pkg} does not have a /lib directory, skipping lib copy."
+        echo "Info: Package $pkg_path does not have a /lib directory, skipping lib copy."
       fi
-    '') commonLibs}
+    done
 
     echo "Finished copying files from commonLibs."
 
