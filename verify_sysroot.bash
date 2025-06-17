@@ -149,6 +149,11 @@ add_component "LLVM C++/Runtime (per README)" \
     "c++/v1/vector llvm/Config/llvm-config.h clang/Basic/TargetInfo.h" \
     "libc++.so.* libc++abi.so.* libclang_rt.*.a libunwind.so.*"
 
+# Abseil C++ common libraries (dependency for re2 and generally useful)
+add_component "Abseil C++" \
+    "absl/strings/string_view.h absl/types/optional.h absl/base/attributes.h" \
+    "libabsl_strings.so.* libabsl_base.so.* libabsl_synchronization.so.*"
+
 # 4. Common compression libraries
 add_component "Zlib" "zlib.h" "libz.so.* libz.a"
 add_component "Bzip2" "bzlib.h" "libbz2.so.*"

@@ -21,6 +21,24 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_flags_parse",
+  shared_library = "lib/libabsl_flags_parse.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_exponential_biased",
+  shared_library = "lib/libabsl_exponential_biased.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_random_internal_platform",
+  shared_library = "lib/libabsl_random_internal_platform.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangToolingSyntax",
   static_library = "lib/libclangToolingSyntax.a",
   visibility = ["//visibility:public"],
@@ -30,6 +48,12 @@ cc_import(
   name = "libitm",
   static_library = "lib/libitm.a",
   shared_library = "lib/libitm.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_stacktrace",
+  shared_library = "lib/libabsl_stacktrace.so",
   visibility = ["//visibility:public"],
 )
 
@@ -46,6 +70,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_synchronization",
+  shared_library = "lib/libabsl_synchronization.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.memprof-preinit-x86_64",
   static_library = "lib/linux/libclang_rt.memprof-preinit-x86_64.a",
   visibility = ["//visibility:public"],
@@ -54,6 +84,12 @@ cc_import(
 cc_import(
   name = "libclangdRemoteIndex",
   static_library = "lib/libclangdRemoteIndex.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_random_seed_gen_exception",
+  shared_library = "lib/libabsl_random_seed_gen_exception.so",
   visibility = ["//visibility:public"],
 )
 
@@ -82,6 +118,18 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_severity",
+  shared_library = "lib/libabsl_log_severity.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_internal_fnmatch",
+  shared_library = "lib/libabsl_log_internal_fnmatch.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangEdit",
   static_library = "lib/libclangEdit.a",
   visibility = ["//visibility:public"],
@@ -100,6 +148,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_flags_program_name",
+  shared_library = "lib/libabsl_flags_program_name.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.xray-basic-x86_64",
   static_library = "lib/linux/libclang_rt.xray-basic-x86_64.a",
   visibility = ["//visibility:public"],
@@ -112,8 +166,20 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_spinlock_wait",
+  shared_library = "lib/libabsl_spinlock_wait.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.builtins-x86_64",
   static_library = "lib/linux/libclang_rt.builtins-x86_64.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_flags_usage",
+  shared_library = "lib/libabsl_flags_usage.so",
   visibility = ["//visibility:public"],
 )
 
@@ -227,6 +293,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_flags_commandlineflag",
+  shared_library = "lib/libabsl_flags_commandlineflag.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangAnalysis",
   static_library = "lib/libclangAnalysis.a",
   visibility = ["//visibility:public"],
@@ -270,6 +342,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_flags_internal",
+  shared_library = "lib/libabsl_flags_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libpcre2-posix",
   shared_library = "lib/libpcre2-posix.so",
   visibility = ["//visibility:public"],
@@ -295,8 +373,20 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_internal_globals",
+  shared_library = "lib/libabsl_log_internal_globals.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangTidyGoogleModule",
   static_library = "lib/libclangTidyGoogleModule.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_scoped_set_env",
+  shared_library = "lib/libabsl_scoped_set_env.so",
   visibility = ["//visibility:public"],
 )
 
@@ -321,14 +411,32 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_internal_check_op",
+  shared_library = "lib/libabsl_log_internal_check_op.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.hwasan_aliases_cxx-x86_64",
   static_library = "lib/linux/libclang_rt.hwasan_aliases_cxx-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
 cc_import(
+  name = "libabsl_demangle_rust",
+  shared_library = "lib/libabsl_demangle_rust.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libc++experimental",
   static_library = "lib/libc++experimental.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_cordz_info",
+  shared_library = "lib/libabsl_cordz_info.so",
   visibility = ["//visibility:public"],
 )
 
@@ -341,6 +449,12 @@ cc_import(
 cc_import(
   name = "libclang-cpp",
   shared_library = "lib/libclang-cpp.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_decode_rust_punycode",
+  shared_library = "lib/libabsl_decode_rust_punycode.so",
   visibility = ["//visibility:public"],
 )
 
@@ -359,6 +473,12 @@ cc_import(
 cc_import(
   name = "libclangToolingInclusions",
   static_library = "lib/libclangToolingInclusions.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_scoped_mock_log",
+  shared_library = "lib/libabsl_scoped_mock_log.so",
   visibility = ["//visibility:public"],
 )
 
@@ -405,6 +525,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_throw_delegate",
+  shared_library = "lib/libabsl_throw_delegate.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangTidyBugproneModule",
   static_library = "lib/libclangTidyBugproneModule.a",
   visibility = ["//visibility:public"],
@@ -436,8 +562,20 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_cord_internal",
+  shared_library = "lib/libabsl_cord_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libpcre2-16",
   shared_library = "lib/libpcre2-16.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_internal_nullguard",
+  shared_library = "lib/libabsl_log_internal_nullguard.so",
   visibility = ["//visibility:public"],
 )
 
@@ -450,6 +588,12 @@ cc_import(
 cc_import(
   name = "libclang_rt.msan-x86_64",
   static_library = "lib/linux/libclang_rt.msan-x86_64.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_internal_format",
+  shared_library = "lib/libabsl_log_internal_format.so",
   visibility = ["//visibility:public"],
 )
 
@@ -484,6 +628,18 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_hash",
+  shared_library = "lib/libabsl_hash.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_time",
+  shared_library = "lib/libabsl_time.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.memprof-x86_64",
   static_library = "lib/linux/libclang_rt.memprof-x86_64.a",
   visibility = ["//visibility:public"],
@@ -508,14 +664,32 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_random_internal_randen_slow",
+  shared_library = "lib/libabsl_random_internal_randen_slow.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangAPINotes",
   static_library = "lib/libclangAPINotes.a",
   visibility = ["//visibility:public"],
 )
 
 cc_import(
+  name = "libabsl_crc_internal",
+  shared_library = "lib/libabsl_crc_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.nsan-x86_64",
   static_library = "lib/linux/libclang_rt.nsan-x86_64.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_bad_any_cast_impl",
+  shared_library = "lib/libabsl_bad_any_cast_impl.so",
   visibility = ["//visibility:public"],
 )
 
@@ -541,6 +715,12 @@ cc_import(
 cc_import(
   name = "libxml2",
   shared_library = "lib/libxml2.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_internal_structured_proto",
+  shared_library = "lib/libabsl_log_internal_structured_proto.so",
   visibility = ["//visibility:public"],
 )
 
@@ -575,6 +755,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_sink",
+  shared_library = "lib/libabsl_log_sink.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.cfi-x86_64",
   static_library = "lib/linux/libclang_rt.cfi-x86_64.a",
   visibility = ["//visibility:public"],
@@ -583,6 +769,12 @@ cc_import(
 cc_import(
   name = "libclangIndex",
   static_library = "lib/libclangIndex.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_low_level_hash",
+  shared_library = "lib/libabsl_low_level_hash.so",
   visibility = ["//visibility:public"],
 )
 
@@ -617,9 +809,27 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_internal_conditions",
+  shared_library = "lib/libabsl_log_internal_conditions.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libanl",
   static_library = "lib/libanl.a",
   shared_library = "lib/libanl.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_random_internal_distribution_test_util",
+  shared_library = "lib/libabsl_random_internal_distribution_test_util.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_failure_signal_handler",
+  shared_library = "lib/libabsl_failure_signal_handler.so",
   visibility = ["//visibility:public"],
 )
 
@@ -655,6 +865,24 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_crc_cpu_detect",
+  shared_library = "lib/libabsl_crc_cpu_detect.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_vlog_config_internal",
+  shared_library = "lib/libabsl_vlog_config_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_status_matchers",
+  shared_library = "lib/libabsl_status_matchers.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libpcre2-32",
   shared_library = "lib/libpcre2-32.so",
   visibility = ["//visibility:public"],
@@ -674,6 +902,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_flags_config",
+  shared_library = "lib/libabsl_flags_config.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.stats_client-x86_64",
   static_library = "lib/linux/libclang_rt.stats_client-x86_64.a",
   visibility = ["//visibility:public"],
@@ -682,6 +916,18 @@ cc_import(
 cc_import(
   name = "libclangIncludeFixer",
   static_library = "lib/libclangIncludeFixer.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_kernel_timeout_internal",
+  shared_library = "lib/libabsl_kernel_timeout_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_initialize",
+  shared_library = "lib/libabsl_log_initialize.so",
   visibility = ["//visibility:public"],
 )
 
@@ -717,6 +963,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_flags_commandlineflag_internal",
+  shared_library = "lib/libabsl_flags_commandlineflag_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.safestack-x86_64",
   static_library = "lib/linux/libclang_rt.safestack-x86_64.a",
   visibility = ["//visibility:public"],
@@ -725,6 +977,12 @@ cc_import(
 cc_import(
   name = "libclangSema",
   static_library = "lib/libclangSema.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_random_internal_seed_material",
+  shared_library = "lib/libabsl_random_internal_seed_material.so",
   visibility = ["//visibility:public"],
 )
 
@@ -771,6 +1029,18 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_civil_time",
+  shared_library = "lib/libabsl_civil_time.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_base",
+  shared_library = "lib/libabsl_base.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.scudo_standalone_cxx-x86_64",
   static_library = "lib/linux/libclang_rt.scudo_standalone_cxx-x86_64.a",
   visibility = ["//visibility:public"],
@@ -796,8 +1066,26 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_periodic_sampler",
+  shared_library = "lib/libabsl_periodic_sampler.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_random_internal_randen_hwaes_impl",
+  shared_library = "lib/libabsl_random_internal_randen_hwaes_impl.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libgcc_eh",
   static_library = "lib/gcc/x86_64-unknown-linux-gnu/14.2.1/libgcc_eh.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_random_internal_randen",
+  shared_library = "lib/libabsl_random_internal_randen.so",
   visibility = ["//visibility:public"],
 )
 
@@ -832,6 +1120,30 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_hashtablez_sampler",
+  shared_library = "lib/libabsl_hashtablez_sampler.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_examine_stack",
+  shared_library = "lib/libabsl_examine_stack.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_globals",
+  shared_library = "lib/libabsl_log_globals.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_crc32c",
+  shared_library = "lib/libabsl_crc32c.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangFormat",
   static_library = "lib/libclangFormat.a",
   visibility = ["//visibility:public"],
@@ -840,6 +1152,12 @@ cc_import(
 cc_import(
   name = "libclang_rt.tysan-x86_64",
   static_library = "lib/linux/libclang_rt.tysan-x86_64.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_flags_reflection",
+  shared_library = "lib/libabsl_flags_reflection.so",
   visibility = ["//visibility:public"],
 )
 
@@ -862,6 +1180,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_flags",
+  shared_library = "lib/libabsl_log_flags.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "crtend",
   objects = ["lib/gcc/x86_64-unknown-linux-gnu/14.2.1/crtend.o"],
   visibility = ["//visibility:public"],
@@ -874,6 +1198,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_random_internal_randen_hwaes",
+  shared_library = "lib/libabsl_random_internal_randen_hwaes.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.tsan_cxx-x86_64",
   static_library = "lib/linux/libclang_rt.tsan_cxx-x86_64.a",
   visibility = ["//visibility:public"],
@@ -882,6 +1212,12 @@ cc_import(
 cc_import(
   name = "libclangChangeNamespace",
   static_library = "lib/libclangChangeNamespace.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_malloc_internal",
+  shared_library = "lib/libabsl_malloc_internal.so",
   visibility = ["//visibility:public"],
 )
 
@@ -900,6 +1236,12 @@ cc_import(
 cc_import(
   name = "libclangDaemonTweaks",
   static_library = "lib/libclangDaemonTweaks.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_int128",
+  shared_library = "lib/libabsl_int128.so",
   visibility = ["//visibility:public"],
 )
 
@@ -959,6 +1301,18 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_symbolize",
+  shared_library = "lib/libabsl_symbolize.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_bad_optional_access",
+  shared_library = "lib/libabsl_bad_optional_access.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangAnalysisFlowSensitive",
   static_library = "lib/libclangAnalysisFlowSensitive.a",
   visibility = ["//visibility:public"],
@@ -967,6 +1321,30 @@ cc_import(
 cc_import(
   name = "libclang_rt.asan-preinit-x86_64",
   static_library = "lib/linux/libclang_rt.asan-preinit-x86_64.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_time_zone",
+  shared_library = "lib/libabsl_time_zone.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_raw_hash_set",
+  shared_library = "lib/libabsl_raw_hash_set.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_debugging_internal",
+  shared_library = "lib/libabsl_debugging_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_random_seed_sequences",
+  shared_library = "lib/libabsl_random_seed_sequences.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1008,8 +1386,20 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_internal_log_sink_set",
+  shared_library = "lib/libabsl_log_internal_log_sink_set.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libturbojpeg",
   shared_library = "lib/libturbojpeg.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_internal_proto",
+  shared_library = "lib/libabsl_log_internal_proto.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1027,6 +1417,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_crc_cord_state",
+  shared_library = "lib/libabsl_crc_cord_state.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangLex",
   static_library = "lib/libclangLex.a",
   visibility = ["//visibility:public"],
@@ -1035,6 +1431,36 @@ cc_import(
 cc_import(
   name = "libclangAST",
   static_library = "lib/libclangAST.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_flags_private_handle_accessor",
+  shared_library = "lib/libabsl_flags_private_handle_accessor.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_strerror",
+  shared_library = "lib/libabsl_strerror.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_city",
+  shared_library = "lib/libabsl_city.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_flags_usage_internal",
+  shared_library = "lib/libabsl_flags_usage_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_cordz_handle",
+  shared_library = "lib/libabsl_cordz_handle.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1059,6 +1485,12 @@ cc_import(
 cc_import(
   name = "libclangDaemon",
   static_library = "lib/libclangDaemon.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_graphcycles_internal",
+  shared_library = "lib/libabsl_graphcycles_internal.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1105,6 +1537,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_bad_variant_access",
+  shared_library = "lib/libabsl_bad_variant_access.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "liblsan",
   static_library = "lib/liblsan.a",
   shared_library = "lib/liblsan.so",
@@ -1131,8 +1569,20 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_random_internal_pool_urbg",
+  shared_library = "lib/libabsl_random_internal_pool_urbg.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libpcreposix",
   shared_library = "lib/libpcreposix.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_tracing_internal",
+  shared_library = "lib/libabsl_tracing_internal.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1145,6 +1595,12 @@ cc_import(
 cc_import(
   name = "libfindAllSymbols",
   static_library = "lib/libfindAllSymbols.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_utf8_for_code_point",
+  shared_library = "lib/libabsl_utf8_for_code_point.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1222,6 +1678,24 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_log_internal_message",
+  shared_library = "lib/libabsl_log_internal_message.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_str_format_internal",
+  shared_library = "lib/libabsl_str_format_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_log_entry",
+  shared_library = "lib/libabsl_log_entry.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libquadmath",
   static_library = "lib/libquadmath.a",
   shared_library = "lib/libquadmath.so",
@@ -1259,6 +1733,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_statusor",
+  shared_library = "lib/libabsl_statusor.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangTidyModernizeModule",
   static_library = "lib/libclangTidyModernizeModule.a",
   visibility = ["//visibility:public"],
@@ -1277,6 +1757,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_random_distributions",
+  shared_library = "lib/libabsl_random_distributions.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.profile-x86_64",
   static_library = "lib/linux/libclang_rt.profile-x86_64.a",
   visibility = ["//visibility:public"],
@@ -1285,6 +1771,12 @@ cc_import(
 cc_import(
   name = "libclang_rt.lsan-x86_64",
   static_library = "lib/linux/libclang_rt.lsan-x86_64.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_cord",
+  shared_library = "lib/libabsl_cord.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1307,6 +1799,12 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_die_if_null",
+  shared_library = "lib/libabsl_die_if_null.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangPseudoCXX",
   static_library = "lib/libclangPseudoCXX.a",
   visibility = ["//visibility:public"],
@@ -1319,8 +1817,20 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_raw_logging_internal",
+  shared_library = "lib/libabsl_raw_logging_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclangInstallAPI",
   static_library = "lib/libclangInstallAPI.a",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_strings",
+  shared_library = "lib/libabsl_strings.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1355,6 +1865,18 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_strings_internal",
+  shared_library = "lib/libabsl_strings_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_demangle_internal",
+  shared_library = "lib/libabsl_demangle_internal.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libgcc_s",
   shared_library = "lib/libgcc_s.so",
   visibility = ["//visibility:public"],
@@ -1363,6 +1885,12 @@ cc_import(
 cc_import(
   name = "Mcrt1",
   objects = ["lib/Mcrt1.o"],
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_leak_check",
+  shared_library = "lib/libabsl_leak_check.so",
   visibility = ["//visibility:public"],
 )
 
@@ -1379,14 +1907,50 @@ cc_import(
 )
 
 cc_import(
+  name = "libabsl_status",
+  shared_library = "lib/libabsl_status.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_cordz_functions",
+  shared_library = "lib/libabsl_cordz_functions.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libclang_rt.hwasan-preinit-x86_64",
   static_library = "lib/linux/libclang_rt.hwasan-preinit-x86_64.a",
   visibility = ["//visibility:public"],
 )
 
 cc_import(
+  name = "libabsl_cordz_sample_token",
+  shared_library = "lib/libabsl_cordz_sample_token.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
   name = "libpng16",
   shared_library = "lib/libpng16.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_string_view",
+  shared_library = "lib/libabsl_string_view.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_poison",
+  shared_library = "lib/libabsl_poison.so",
+  visibility = ["//visibility:public"],
+)
+
+cc_import(
+  name = "libabsl_flags_marshalling",
+  shared_library = "lib/libabsl_flags_marshalling.so",
   visibility = ["//visibility:public"],
 )
 

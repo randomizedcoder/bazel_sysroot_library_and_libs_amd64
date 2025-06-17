@@ -32,6 +32,10 @@ let
     llvm.libunwind.dev   # Provides libunwind headers
 
     libclang libclang.dev libclang.lib
+
+    #https://abseil.io/
+    abseil-cpp
+
     libuuid libuuid.dev libuuid.out
 
     # Compression libraries (compiler-agnostic)

@@ -24,8 +24,8 @@ copts = [
 ## What's Included
 
 The sysroot includes:
-
 - GCC runtime libraries and its C++ Standard Library (libstdc++)
+- Common C++ utility libraries (abseil-cpp)
 - Text processing libraries (pcre, pcre2, re2)
 - Compression libraries (zlib, bzip2, xz, zstd)
 - XML and parsing libraries (libxml2, expat)
@@ -176,6 +176,7 @@ Then, in your `BUILD` files, you can depend on the libraries using targets like 
 
 The sysroot includes:
 - Core system libraries (glibc, gcc)
+- Common C++ utility libraries (abseil-cpp)
 - Compression libraries (zlib, bzip2, xz, zstd)
 - XML and parsing libraries (libxml2, expat)
 - Networking libraries (openssl, curl)
