@@ -25,7 +25,8 @@ let
     llvm.libcxxClang
     llvm.libcxx          # Provides libc++.so, libc++.a (libraries)
     llvm.libcxx.dev      # Provides C++ headers
-    llvm.libc-full
+    # do NOT include llvm.libc-full, because it will override glibc
+    #llvm.libc-full
     llvm.compiler-rt     # Provides libclang_rt.builtins*.a
     llvm.compiler-rt.dev # Provides libclang_rt headers
     llvm.libunwind       # Provides libunwind for exception handling
