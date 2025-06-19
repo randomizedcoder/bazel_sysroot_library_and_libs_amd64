@@ -95,8 +95,14 @@ The sysroot build process includes special handling for static library linker sc
 Example transformation:
 ```
 Before: GROUP ( /nix/store/vaybwmwx0hh03jcsmzizq28xxrnnzhyb-glibc-2.40-66-static/lib/libm-2.40.a /nix/store/vaybwmwx0hh03jcsmzizq28xxrnnzhyb-glibc-2.40-66-static/lib/libmvec.a )
-After:  GROUP ( lib/libm-2.40.a lib/libmvec.a )
+After:  GROUP ( libm-2.40.a libmvec.a )
 ```
+
+**Important Note on Path Resolution**: We remove the `lib/` prefix from the referenced libraries in linker scripts. This is because:
+- The linker is invoked with `--sysroot` pointing to the sysroot root directory
+- Library search paths include `-Lexternal/+_repo_rules+bazel_sysroot_library_and_libs_amd64/lib`
+- When the linker processes the linker script, it searches for libraries relative to the current working directory (the Bazel sandbox execroot)
+- By using just the filename (e.g., `libm-2.40.a` instead of `lib/libm-2.40.a`), the linker can find the libraries using its configured search paths
 
 ### Why This Matters
 
