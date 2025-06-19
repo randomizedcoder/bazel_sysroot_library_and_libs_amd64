@@ -69,6 +69,91 @@ The sysroot includes a sophisticated shared library handling system that manages
    - Dependencies are properly resolved
    - Circular dependencies are handled correctly
 
+## Static Library Linker Scripts
+
+An interesting discovery during the development of this sysroot is the distinction between static libraries and static library linker scripts:
+
+### Static Libraries vs. Static Library Linker Scripts
+
+1. **Most `.a` files are real static libraries**: In a typical sysroot, the vast majority of `.a` files are actual static libraries (ar archives) containing compiled object code. For example:
+   - `libc.a` - The C standard library (real static library)
+   - `libstdc++.a` - The C++ standard library (real static library)
+   - `libz.a` - zlib compression library (real static library)
+
+2. **A few `.a` files are linker scripts**: Some `.a` files are actually text files (linker scripts) that reference other libraries. For example:
+   - `libm.a` - A linker script that references `libm-2.40.a` and `libmvec.a`
+
+### Processing Static Library Linker Scripts
+
+The sysroot build process includes special handling for static library linker scripts:
+
+1. **Detection**: The build script identifies `.a` files that are actually text files (linker scripts) using the `file` command
+2. **Path Resolution**: For each linker script, it extracts references to Nix store paths (e.g., `/nix/store/.../lib/libm-2.40.a`)
+3. **Library Copying**: Referenced libraries are copied to the sysroot if they don't already exist
+4. **Path Rewriting**: The linker script is rewritten to use relative paths instead of absolute Nix store paths
+
+Example transformation:
+```
+Before: GROUP ( /nix/store/vaybwmwx0hh03jcsmzizq28xxrnnzhyb-glibc-2.40-66-static/lib/libm-2.40.a /nix/store/vaybwmwx0hh03jcsmzizq28xxrnnzhyb-glibc-2.40-66-static/lib/libmvec.a )
+After:  GROUP ( lib/libm-2.40.a lib/libmvec.a )
+```
+
+### Why This Matters
+
+This distinction is important for Bazel builds because:
+- **Real static libraries** can be linked directly by Bazel
+- **Static library linker scripts** need to be processed to ensure all referenced libraries are available and paths are relative
+- **Mixed static/shared builds** can use real static libraries for core components and shared libraries for third-party dependencies
+
+In this sysroot, out of 175 `.a` files, only 1 (`libm.a`) is a linker script, while the rest are real static libraries. This is typical for most sysroots.
+
+## Static Library Availability in Nix Packages
+
+Through systematic analysis of the Nix packages used in this sysroot, we discovered which packages contain static libraries:
+
+### Packages with Static Libraries (17% of packages checked)
+
+The following packages contain static libraries (`.a` files) that can be used for fully static builds:
+
+- **Core System Libraries**: `glibc`, `glibc.dev`, `glibc.static`
+- **GCC Runtime**: `libgcc`, `gcc-unwrapped`
+- **Clang Libraries**: `libclang.lib`
+- **Compression**: `zlib`, `zlib.dev`, `zlib.static`
+- **Cryptography**: `boringssl`, `boringssl.dev`, `boringssl.out`
+- **Image Processing**: `libpng`
+
+### Packages Without Static Libraries
+
+The majority of packages (83%) only provide shared libraries. These include:
+- `bzip2`, `xz`, `zstd` (compression)
+- `libxml2`, `expat` (XML parsing)
+- `openssl`, `curl` (networking)
+- `pcre`, `pcre2`, `re2` (text processing)
+- `jansson` (JSON)
+- `sqlite` (database)
+- `libjpeg` (image processing)
+- `util-linux` (system utilities)
+
+### Implications for Static Linking
+
+This discovery has important implications for our build strategy:
+
+1. **Mixed Static/Shared Approach**: Since only 17% of packages have static libraries, a fully static build is not feasible for most applications. The current mixed approach (static core libraries + shared third-party libraries) is appropriate.
+
+2. **Core Library Static Linking**: We can statically link core system libraries (glibc, libgcc, zlib) while using shared libraries for third-party dependencies.
+
+3. **Future Considerations**: When new packages are added to the sysroot, we should check if they provide static libraries and update the build configuration accordingly.
+
+### Discovery Methodology
+
+We used a custom script (`find_static_libraries.bash`) that:
+- Searches the Nix store for all versions of each package
+- Checks for `.a` files in package `lib/` directories
+- Distinguishes between real static libraries and linker scripts
+- Provides a comprehensive report of static library availability
+
+This analysis helps inform build decisions and ensures we're using the most appropriate linking strategy for each library.
+
 ## Usage
 
 To use this sysroot in your Bazel project:
@@ -237,14 +322,34 @@ When using Nix-built libraries, there are two important things to be aware of:
    - They may have embedded RPATH entries pointing to the Nix store
    - We need to ensure all dependencies are present in the sysroot
 
+### Linker Scripts and Static Libraries
+Similar to shared libraries, some static libraries (`.a` files) can also be linker scripts rather than actual archive files. This is particularly common with Nix-built libraries:
+
+1. **Static Library Linker Scripts**: Some `.a` files are actually linker scripts pointing to other static libraries:
+   - `libm.a` might be a linker script pointing to `libm-2.40.a` and `libmvec.a`
+   - These scripts often contain absolute paths to the Nix store (e.g., `/nix/store/.../lib/libm-2.40.a`)
+   - We need to rewrite these scripts to use relative paths instead
+
+2. **Static Library Dependencies**: The referenced static libraries may have their own dependencies:
+   - They may reference other static libraries via absolute paths
+   - We need to ensure all referenced static libraries are present in the sysroot
+   - The referenced libraries must be copied from the Nix store to the sysroot
+
 ### How We Handle This
 In our `default.nix`:
-1. We copy the actual shared libraries (`.so.6` files)
-2. We create our own linker scripts with relative paths
-3. We ensure all required dependencies are present in the sysroot
-4. We use `patchelf` to fix RPATH entries if needed
+1. **For Shared Libraries**:
+   - We copy the actual shared libraries (`.so.6` files)
+   - We create our own linker scripts with relative paths
+   - We ensure all required dependencies are present in the sysroot
+   - We use `patchelf` to fix RPATH entries if needed
 
-This ensures that the sysroot is truly hermetic and doesn't depend on the Nix store or host system.
+2. **For Static Libraries**:
+   - We identify static library linker scripts (`.a` files that are text files)
+   - We copy the referenced static libraries from the Nix store to the sysroot
+   - We rewrite the linker scripts to use relative paths instead of Nix store paths
+   - We ensure all referenced static libraries are present in the sysroot
+
+This ensures that the sysroot is truly hermetic and doesn't depend on the Nix store or host system for both shared and static linking.
 
 ## Handling Nix-Built Shared Libraries
 
