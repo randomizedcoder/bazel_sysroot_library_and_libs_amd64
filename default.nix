@@ -121,7 +121,6 @@ pkgs.stdenv.mkDerivation {
           --exclude='pkgconfig/' \
           --exclude='cmake/' \
           --exclude='*.so' \
-          --include='*.a' \
           "$pkg_path/lib/" "$out/sysroot/lib/" || true
       else
         echo "Info: Package $pkg_path does not have a /lib directory, skipping lib copy."
@@ -262,7 +261,7 @@ pkgs.stdenv.mkDerivation {
           # Rewrite the linker script to use relative paths
           echo "  Rewriting linker script to use relative paths..."
           temp_file=$(mktemp)
-          if sed 's|/nix/store/[^[:space:]]*lib/|lib/|g' "$afile" > "$temp_file"; then
+          if sed 's|/nix/store/[^[:space:]]*lib/||g' "$afile" > "$temp_file"; then
             mv "$temp_file" "$afile"
             echo "  Updated linker script: $afile"
           else
