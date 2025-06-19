@@ -113,6 +113,7 @@ pkgs.stdenv.mkDerivation {
         echo "Copying lib files from $pkg_path to $out/sysroot/lib/ (excluding .pc, .la, pkgconfig/, cmake/, and .so files)"
         # Explicitly using --recursive --copy-links and --no-perms, --no-owner, --no-group.
         # Exclude .so files (linker scripts) but keep .so.X.Y.Z files (actual shared libraries)
+        # Include .a files (static libraries) when they exist
         # Exclude gcc's libstdc++ and libsupc++
         rsync --recursive --copy-links --no-perms --no-owner --no-group \
           --exclude='*.pc' \
@@ -120,6 +121,7 @@ pkgs.stdenv.mkDerivation {
           --exclude='pkgconfig/' \
           --exclude='cmake/' \
           --exclude='*.so' \
+          --include='*.a' \
           "$pkg_path/lib/" "$out/sysroot/lib/" || true
       else
         echo "Info: Package $pkg_path does not have a /lib directory, skipping lib copy."
@@ -203,6 +205,77 @@ pkgs.stdenv.mkDerivation {
         echo "  Created linker script: $out/sysroot/lib/$lib.so"
       fi
     done
+
+    # Handle static library linker scripts
+    echo "Processing static library linker scripts..."
+    echo "First, identifying .a files that are actually linker scripts:"
+
+    # Find all .a files and check which ones are linker scripts (text files)
+    static_libs=$(find "$out/sysroot/lib" -maxdepth 1 -type f -name "*.a" | while read -r afile; do
+      if file "$afile" | grep -q "text"; then
+        echo "$afile"
+      fi
+    done)
+
+    if [ -n "$static_libs" ]; then
+      echo "Found static library linker scripts:"
+      echo "$static_libs"
+
+      for afile in $static_libs; do
+        echo "Processing static library linker script: $afile"
+
+        # Read the linker script and extract referenced libraries
+        referenced_libs=$(grep -o '/nix/store/[^[:space:]]*\.a' "$afile" || true)
+
+        if [ -n "$referenced_libs" ]; then
+          echo "  Found referenced libraries:"
+          for ref_lib in $referenced_libs; do
+            echo "    - $ref_lib"
+
+            # Extract the library name from the full path
+            lib_name=$(basename "$ref_lib")
+
+            # Check if the referenced library exists
+            if [ -f "$ref_lib" ]; then
+              # Check if the library is already in the sysroot
+              if [ -f "$out/sysroot/lib/$lib_name" ]; then
+                echo "      Library $lib_name already exists in sysroot"
+                # Check if it's the same file (same inode)
+                if [ "$(stat -c %i "$ref_lib")" = "$(stat -c %i "$out/sysroot/lib/$lib_name")" ]; then
+                  echo "      Files are identical (same inode), skipping copy"
+                else
+                  echo "      Files are different, but target exists - skipping copy to avoid permission issues"
+                fi
+              else
+                echo "      Copying $lib_name to sysroot..."
+                if cp "$ref_lib" "$out/sysroot/lib/"; then
+                  echo "      Successfully copied $lib_name"
+                else
+                  echo "      Warning: Failed to copy $lib_name (permission denied or other error)"
+                fi
+              fi
+            else
+              echo "      Warning: Referenced library $ref_lib not found"
+            fi
+          done
+
+          # Rewrite the linker script to use relative paths
+          echo "  Rewriting linker script to use relative paths..."
+          temp_file=$(mktemp)
+          if sed 's|/nix/store/[^[:space:]]*lib/|lib/|g' "$afile" > "$temp_file"; then
+            mv "$temp_file" "$afile"
+            echo "  Updated linker script: $afile"
+          else
+            echo "  Warning: Failed to update linker script $afile"
+            rm -f "$temp_file"
+          fi
+        else
+          echo "  No Nix store paths found in linker script"
+        fi
+      done
+    else
+      echo "No static library linker scripts found"
+    fi
 
     # Fix RPATH entries in shared libraries
     echo "Fixing RPATH entries in shared libraries..."
